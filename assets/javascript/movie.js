@@ -20,11 +20,13 @@ var movieQuery = function(genres, long, lat) {
         var endpoint = '/search?';
         var url = base + endpoint + 'q=' + genres + '&lat=' + lat + '&long=' + long + '&apikey=' + apikey;
         $.ajax({
-                url: url,
-                method: 'GET'
-            }).done(function(data) {
-                    console.log(url);
-                    console.log(data)
+            url: url,
+            method: 'GET'
+        }).done(function(data) {
+            console.log(url);
+            console.log(data)
+        });
+}            
 
 
                     // Here is your key: d0e5a2c5
