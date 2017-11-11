@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	
+	<!-- Bootstrap Links -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link href="assets/css/styles.css" rel="stylesheet">
+
+    <title>Date Night App</title>
+    
+</head>
+
+<body>
+
+ <div id="container">
+
+	<div class="page-header">
+
+		<div class="jumbotron page-header heading-styles">
+			<h1>Dates R Us</h1>
+			<h2>Dinner and a Movie<h2>
+		</div>
+	</div>
+
+	<!-- Bootstrap row start -->
+	<div class="row">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+			Give us your preferences!
+			</div>
+
+			<div class="panel-body">
+				<form id="form">
+					<div class="form-group">
+						<!-- Label for input field -->
+						<label for="zip-input">Zip Code </label>
+						<!-- Input field for zip -->
+						<input type="text" name="zip-input" id="zip-input" class="form-control">
+						<!-- Label for input field -->
+						<label for="movie-genre-input">Movie Type </label>
+						<!-- Input field for name -->
+						<input type="text" name="movie-genre-input" id="movie-genre-input" class="form-control">
+						<!-- Label for input field -->
+						<label for="resturant-type-input">Food Style</label>
+						<!-- Input field for name -->
+						<input type="text" name="resturant-type-input" id="resturant-type-input" class="form-control">
+						<!-- Input field for name -->
+						<label for="date-input">When?</label>
+						<!-- Input field for name -->
+						<input type="text" name="date-input" id="date-input" class="form-control">
+
+						<!-- button to submit the input for a new button -->
+						<button type="submit" class="btn button-submit" id="preference-submit">Get Date Options</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap row start -->
+	<div class="row">
+		
+		<!-- Bootstrap column for movie choices to be displayed -->
+		<div class="col-md-6" id="movie-choices-list">
+			<div class="panel panel-primary">
+
+				<div class="panel-heading">
+				Pick Your Movie!
+				</div>
+
+				<div class="panel-body">
+					<table class="table table-striped" id="movie-list">
+						<tr>
+							<th>Movie Name</th>
+							<th>Times</th>
+							<th>Location</th>
+							<th>Miles Away</th>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<!-- Bootstrap column for resturant choices to be displayed -->
+		<div class="col-md-6" id="restaurant-choices-list">
+			<div class="panel panel-primary">
+
+				<div class="panel-heading">
+				Pick Dinner!
+				</div>
+
+				<div class="panel-body">
+					<table class="table table-striped" id="restaurant-list">
+						<tr>
+							<th>Restaurant</th>
+							<th>Price</th>
+							<th>Location</th>
+							<th>Miles Away</th>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Bootstrap row start -->
+	<div class="row">
+		
+		<!-- Bootstrap column for movie choices to be displayed -->
+		<div class="col-md-6" id="movie-final">
+			<div class="panel panel-primary">
+
+				<div class="panel-heading">
+				Enjoy the Show!
+				</div>
+
+				<div class="panel-body" id="final-movie-choice-details">
+
+				</div>
+
+			</div>
+		</div>
+	
+		<!-- Bootstrap column for resturant choices to be displayed -->
+		<div class="col-md-6" id="restaurant-final">
+			<div class="panel panel-primary">
+
+				<div class="panel-heading" >
+				Chow Down!
+				</div>
+
+				<div class="panel-body" id="final-movie-choice-details">
+					
+				</div>
+			</div>
+		</div>
+
+	</div>
+    
+ 
+
+  </div>
+
+
+	<!-- jQuery Library added -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Bootstrap Library added -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="assets/javascript/scripts.js"></script>
+	<script src="assets/javascript/movie.js"></script>
+
+</body>
+
+</html>

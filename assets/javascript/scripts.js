@@ -1,11 +1,12 @@
-// //Get users' lat and long
-// if (navigator.geolocation) {
-//     navigator.geolocation.getCurrentPosition(function(position) {
-//     	console.log(position);
-//         userData.lat = position.coords.latitude;
-//         userData.long = position.coords.longitude;
-//     })
-// }
+
+//Get users' lat and long
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        console.log(position);
+        userData.lat = position.coords.latitude;
+        userData.long = position.coords.longitude;
+    })
+}
 
 //Form will add these values
 var userData = {
@@ -28,6 +29,22 @@ var validationData = {
 }
 
 
+//Take an array and X number of items; return an array of X random items from the array
+//We can use this to get X random items from the Movie and Dinner APIs
+var testArray = ["a", "b", "c", "d", "e"];
+
+var randomizeArray = function(array, num) {
+    var oldArr = array;
+    var newArr = [];
+    for (var i = 0; i < num; i++) {
+        var index = Math.floor(Math.random() * array.length);
+        var newItem = oldArr.splice(index, 1);
+        newArr.push(newItem[0]);        
+    }
+   return newArr;
+}
+//
+
 //get data from Zomato
 var dinnerQuery = function(cuisine, long, lat) {
     var apikey = '5102e337643a0e5250051310c79d40d6';
@@ -37,10 +54,22 @@ var dinnerQuery = function(cuisine, long, lat) {
     $.ajax({
         url: url,
         method: 'GET'
+
     }).done(function(data) {
         console.log(url);
         console.log(data);
     });
+
+    }).done(function(data) {        
+        userData.dinnerOptions = randomizeArray(data.restaurants, 3);
+
+
+// ----------------------------------------------------------
+        console.log(userData.dinnerOptions);
+
+        // added grab api data for table row creation here
+        putRestaurantAPIDataIntoTableDiv();
+    })
 
 }
 
@@ -92,4 +121,119 @@ var dinnerQuery = function(cuisine, long, lat) {
 
 
 //test
-//dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
+dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
+
+
+
+
+
+// ----------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
+// 
+// Brea's working area
+// 
+// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
+
+
+// ---------------------------------------------------------------------------------------------------------------
+// Grab restaurant API data and put it in the table
+// arguments: none
+// returns: nothing
+// ---------------------------------------------------------------------------------------------------------------
+function putRestaurantAPIDataIntoTableDiv () {
+
+    var restName;
+    var restPrice;
+    var restLocation;
+    var restRating;
+
+    for (var i = 0; i < userData.dinnerOptions.length; i++) {
+
+        // console.log(userData.dinnerOptions[i]);
+
+        restName = userData.dinnerOptions[i].restaurant.name;
+        restPrice = userData.dinnerOptions[i].restaurant.price_range;
+        restLocation = userData.dinnerOptions[i].restaurant.location.address;
+        restRating = userData.dinnerOptions[i].restaurant.user_rating.aggregate_rating;
+
+
+        // console.log("restaurant name =", restName);
+        // console.log("restaurant price range =", restPrice);
+        // console.log("restaurant location =", restLocation);
+        // console.log("restaurant Rating =", restRating);
+
+        var newRestaurantRow = createTableRowRestaurant(i, restName, restPrice, restLocation, restRating);
+
+        // console.log(newRestaurantRow);
+
+        // console.log($("#restaurant-choices-list").text());
+
+        $("#restaurant-choices-list > tbody").append(newRestaurantRow);
+
+
+    }
+    
+}
+
+
+// ---------------------------------------------------------------------------------------------------------------
+// Create & Format table row data for movie API data
+// arguments: movie name, times, location, rating
+// returns: html setup of the new table row with the table data passed in the arugments section
+// ---------------------------------------------------------------------------------------------------------------
+function createTableRowMovie(id, name, timesArray, location, rating) {
+
+    var timesHTMLList = "<ul>";
+
+    for (var i = 0; i < timesArray.length; i++) {
+
+        timesHTMLList += `<li>${timesArray[i]}</li>`;
+    }
+
+    timesArray += "</ul>";
+
+    // use ` instead of ' or " to be able to add the variable names into the string and it interpret them for the values passed in
+    return `
+        <tr id='${id}'>
+            <td>${name}</td>
+            <td>${timesHTMLList}</td>
+            <td>${location}</td>
+            <td>${rating}</td>
+        </tr>
+    `;
+
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// Create & Format table row data for restaurant API data
+// arguments: restaurant name, price range, location (address), rating
+// returns: html setup of the new table row with the table data passed in the arugments section
+// ---------------------------------------------------------------------------------------------------------------
+function createTableRowRestaurant(id, name, price, location, rating) {
+
+    // use ` instead of ' or " to be able to add the variable names into the string and it interpret them for the values passed in
+    return `
+        <tr id='${id}'>
+            <td>${name}</td>
+            <td>${price}</td>
+            <td>${location}</td>
+            <td>${rating}</td>
+        </tr>
+    `;
+
+}
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
+// 
+// End of Brea's working area
+//
+// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
+
+
