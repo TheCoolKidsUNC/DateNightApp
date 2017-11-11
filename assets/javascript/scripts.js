@@ -1,12 +1,12 @@
-
 //Get users' lat and long
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-        console.log(position);
-        userData.lat = position.coords.latitude;
-        userData.long = position.coords.longitude;
-    })
-}
+// Commented this out because it's annoying. Have hard typed latt and long in userData for testing.
+// if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(function(position) {
+//         console.log(position);
+//         userData.lat = position.coords.latitude;
+//         userData.long = position.coords.longitude;
+//     })
+// }
 
 //Form will add these values
 var userData = {
@@ -15,7 +15,7 @@ var userData = {
     long: -78.638179, //TEST DATA 
     lat: 35.779590, //TEST DATA
     cuisinePref: 'mexican', //TEST DATA - user's preference
-    genrePref: null, //user's preference
+    genrePref: 18, //user's preference
     dinnerOptions: [], //list of options from API
     movieOptions: [], //list of options from API
     dinnerDecision: null, //final choice
@@ -25,25 +25,98 @@ var userData = {
 //Use these arrays to  validate user input
 var validationData = {
     cuisines: ["african", "american", "amish", "argentine", "armenian", "asian", "bbq", "bagels", "bakery", "bar food", "belgian", "beverages", "brazilian", "breakfast", "british", "burger", "cafe", "cajun", "california", "cantonese", "caribbean", "chinese", "coffee and tea", "colombian", "cuban", "deli", "desserts", "dim sum", "diner", "donuts", "drinks only", "eastern european", "ethiopian", "european", "fast food", "filipino", "fish and chips", "french", "frozen yogurt", "fusion", "german", "greek", "healthy food", "ice cream", "indian", "international", "irish", "italian", "jamaican", "japanese", "kebab", "korean", "latin american", "lebanese", "mediterranean", "mexican", "middle eastern", "mongolian", "moroccan", "nepalese", "pakistani", "peruvian", "pizza", "pub food", "ramen", "salad", "sandwich", "seafood", "soul food", "south american", "south indian", "southern", "southwestern", "spanish", "steak", "sushi", "taco", "tapas", "tea", "teriyaki", "tex-mex", "thai", "turkish", "vegetarian", "venezuelan", "vietnamese"],
-    genres: ["action", "adventure", "animation", "comedy", "crime", "documentary", "drama", "family", "fantasy", "history", "horror", "music", "musical", "mystery", "romance", "sci-fi", "thriller", "war", "western"],
+    genres: [{
+            "id": 28,
+            "name": "Action"
+        },
+        {
+            "id": 12,
+            "name": "Adventure"
+        },
+        {
+            "id": 16,
+            "name": "Animation"
+        },
+        {
+            "id": 35,
+            "name": "Comedy"
+        },
+        {
+            "id": 80,
+            "name": "Crime"
+        },
+        {
+            "id": 99,
+            "name": "Documentary"
+        },
+        {
+            "id": 18,
+            "name": "Drama"
+        },
+        {
+            "id": 10751,
+            "name": "Family"
+        },
+        {
+            "id": 14,
+            "name": "Fantasy"
+        },
+        {
+            "id": 36,
+            "name": "History"
+        },
+        {
+            "id": 27,
+            "name": "Horror"
+        },
+        {
+            "id": 10402,
+            "name": "Music"
+        },
+        {
+            "id": 9648,
+            "name": "Mystery"
+        },
+        {
+            "id": 10749,
+            "name": "Romance"
+        },
+        {
+            "id": 878,
+            "name": "Science Fiction"
+        },
+        {
+            "id": 10770,
+            "name": "TV Movie"
+        },
+        {
+            "id": 53,
+            "name": "Thriller"
+        },
+        {
+            "id": 10752,
+            "name": "War"
+        },
+        {
+            "id": 37,
+            "name": "Western"
+        }
+    ]
 }
 
 
 //Take an array and X number of items; return an array of X random items from the array
 //We can use this to get X random items from the Movie and Dinner APIs
-var testArray = ["a", "b", "c", "d", "e"];
-
 var randomizeArray = function(array, num) {
     var oldArr = array;
     var newArr = [];
     for (var i = 0; i < num; i++) {
         var index = Math.floor(Math.random() * array.length);
         var newItem = oldArr.splice(index, 1);
-        newArr.push(newItem[0]);        
+        newArr.push(newItem[0]);
     }
-   return newArr;
+    return newArr;
 }
-//
 
 //get data from Zomato
 var dinnerQuery = function(cuisine, long, lat) {
@@ -54,32 +127,38 @@ var dinnerQuery = function(cuisine, long, lat) {
     $.ajax({
         url: url,
         method: 'GET'
-
     }).done(function(data) {
-        console.log(url);
-        console.log(data);
-    });
-
-    }).done(function(data) {        
         userData.dinnerOptions = randomizeArray(data.restaurants, 3);
-
-
-// ----------------------------------------------------------
-        console.log(userData.dinnerOptions);
-
-        // added grab api data for table row creation here
         putRestaurantAPIDataIntoTableDiv();
     })
-
 }
 
-  $("#zip-input").on("click", function() {
 
+var movieQuery = function(genre) {
+    var apikey = 'd928a0b7d0a845298ec26a9121d6724f';
+    var base = 'https://api.themoviedb.org/3';
+    var endpoint = '/discover/movie?';
+    // var url = base + endpoint + 'with_genres=' + genre + '&apikey=' + apikey;
+    var url = base + endpoint + 'api_key=' + apikey + '&language=en-US&sort_by=popularity.desc&page=1&with_genres=' + genre;
+    $.ajax({
+        crossDomain: true,
+        url: url,
+        method: 'GET'
+    }).done(function(data) {
+        console.log(url);
+        console.log(data)
+    });
+}
+
+// These calls are for testing purposes
+// They need to be triggered by the submit button eventually
+dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
+movieQuery(userData.genrePref);
+
+$("#zip-input").on("click", function() {
     var zip = $("#zip-input").val().trim();
-    	console.log(zip);
-
-   });
-
+    console.log(zip);
+});
 
 (function() {
     $('form > input').keyup(function() {
@@ -99,41 +178,27 @@ var dinnerQuery = function(cuisine, long, lat) {
     });
 })
 
-      $("#add-new-genre").on("click", function(event) {
-        event.preventDefault();
+$("#add-new-genre").on("click", function(event) {
+    event.preventDefault();
 
-        // This line grabs the input from the textbox
-        var userGenre = $("#movie-user-input-genre").val().trim();
-        console.log(userGenre)
-        $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
+    // This line grabs the input from the textbox
+    var userGenre = $("#movie-user-input-genre").val().trim();
+    console.log(userGenre)
+    $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
 
-    });
+});
 
-      $("#add-new-food-type").on("click", function(event) {
-        event.preventDefault();
+$("#add-new-food-type").on("click", function(event) {
+    event.preventDefault();
 
-        // This line grabs the input from the textbox
-        var userFood = $("#food-type-user-input").val().trim();
-        console.log(userFood)
-        $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
+    // This line grabs the input from the textbox
+    var userFood = $("#food-type-user-input").val().trim();
+    console.log(userFood)
+    $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
 
-    });
-
-
-//test
-dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
+});
 
 
-
-
-
-// ----------------------------------------------------------
-// --------------------------------------------------------------------------------------------------------------------
-// 
-// Brea's working area
-// 
-// --------------------------------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------------------------------
 
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -141,7 +206,7 @@ dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
 // arguments: none
 // returns: nothing
 // ---------------------------------------------------------------------------------------------------------------
-function putRestaurantAPIDataIntoTableDiv () {
+function putRestaurantAPIDataIntoTableDiv() {
 
     var restName;
     var restPrice;
@@ -150,30 +215,16 @@ function putRestaurantAPIDataIntoTableDiv () {
 
     for (var i = 0; i < userData.dinnerOptions.length; i++) {
 
-        // console.log(userData.dinnerOptions[i]);
-
         restName = userData.dinnerOptions[i].restaurant.name;
         restPrice = userData.dinnerOptions[i].restaurant.price_range;
         restLocation = userData.dinnerOptions[i].restaurant.location.address;
         restRating = userData.dinnerOptions[i].restaurant.user_rating.aggregate_rating;
 
-
-        // console.log("restaurant name =", restName);
-        // console.log("restaurant price range =", restPrice);
-        // console.log("restaurant location =", restLocation);
-        // console.log("restaurant Rating =", restRating);
-
         var newRestaurantRow = createTableRowRestaurant(i, restName, restPrice, restLocation, restRating);
-
-        // console.log(newRestaurantRow);
-
-        // console.log($("#restaurant-choices-list").text());
-
+     
         $("#restaurant-choices-list > tbody").append(newRestaurantRow);
-
-
     }
-    
+
 }
 
 
@@ -223,17 +274,3 @@ function createTableRowRestaurant(id, name, price, location, rating) {
     `;
 
 }
-
-
-
-
-
-// --------------------------------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------------------------------
-// 
-// End of Brea's working area
-//
-// --------------------------------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------------------------------
-
-
