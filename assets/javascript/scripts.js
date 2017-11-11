@@ -1,11 +1,12 @@
 //Get users' lat and long
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-        console.log(position);
-        userData.lat = position.coords.latitude;
-        userData.long = position.coords.longitude;
-    })
-}
+// Commented this out because it's annoying. Have hard typed latt and long in userData for testing.
+// if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(function(position) {
+//         console.log(position);
+//         userData.lat = position.coords.latitude;
+//         userData.long = position.coords.longitude;
+//     })
+// }
 
 //Form will add these values
 var userData = {
@@ -106,8 +107,6 @@ var validationData = {
 
 //Take an array and X number of items; return an array of X random items from the array
 //We can use this to get X random items from the Movie and Dinner APIs
-var testArray = ["a", "b", "c", "d", "e"];
-
 var randomizeArray = function(array, num) {
     var oldArr = array;
     var newArr = [];
@@ -118,7 +117,6 @@ var randomizeArray = function(array, num) {
     }
     return newArr;
 }
-//
 
 //get data from Zomato
 var dinnerQuery = function(cuisine, long, lat) {
@@ -130,20 +128,18 @@ var dinnerQuery = function(cuisine, long, lat) {
         url: url,
         method: 'GET'
     }).done(function(data) {
-        userData.movieOptions = randomizeArray(data.restaurants, 3);
-        console.log(userData.movieOptions);
+        userData.dinnerOptions = randomizeArray(data.restaurants, 3);
+        putRestaurantAPIDataIntoTableDiv();
     })
 }
 
-//test
-dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
 
 var movieQuery = function(genre) {
     var apikey = 'd928a0b7d0a845298ec26a9121d6724f';
     var base = 'https://api.themoviedb.org/3';
-    var endpoint = '/discover/movie?';    
+    var endpoint = '/discover/movie?';
     // var url = base + endpoint + 'with_genres=' + genre + '&apikey=' + apikey;
-    var url = base + endpoint + 'api_key='+apikey+'&language=en-US&sort_by=popularity.desc&page=1&with_genres='+genre;
+    var url = base + endpoint + 'api_key=' + apikey + '&language=en-US&sort_by=popularity.desc&page=1&with_genres=' + genre;
     $.ajax({
         crossDomain: true,
         url: url,
@@ -154,31 +150,90 @@ var movieQuery = function(genre) {
     });
 }
 
-movieQuery(userData.genrePref)
+// These calls are for testing purposes
+// They need to be triggered by the submit button eventually
+dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
+movieQuery(userData.genrePref);
+
+$("#zip-input").on("click", function() {
+    var zip = $("#zip-input").val().trim();
+    console.log(zip);
+});
+
+(function() {
+    $('form > input').keyup(function() {
+
+        var empty = false;
+        $('form > input').each(function() {
+            if ($(this).val() == '') {
+                empty = true;
+            }
+        });
+
+        if (empty) {
+            $('#submit').attr('disabled', 'disabled');
+        } else {
+            $('#submit').removeAttr('disabled');
+        }
+    });
+})
+
+$("#add-new-genre").on("click", function(event) {
+    event.preventDefault();
+
+    // This line grabs the input from the textbox
+    var userGenre = $("#movie-user-input-genre").val().trim();
+    console.log(userGenre)
+    $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
+
+});
+
+$("#add-new-food-type").on("click", function(event) {
+    event.preventDefault();
+
+    // This line grabs the input from the textbox
+    var userFood = $("#food-type-user-input").val().trim();
+    console.log(userFood)
+    $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
+
+});
 
 
 
 
+// ---------------------------------------------------------------------------------------------------------------
+// Grab restaurant API data and put it in the table
+// arguments: none
+// returns: nothing
+// ---------------------------------------------------------------------------------------------------------------
+function putRestaurantAPIDataIntoTableDiv() {
 
+    var restName;
+    var restPrice;
+    var restLocation;
+    var restRating;
 
-// --------------------------------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------------------------------
-// 
-// Brea's working area
-// 
-// --------------------------------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------------------------------
+    for (var i = 0; i < userData.dinnerOptions.length; i++) {
 
+        restName = userData.dinnerOptions[i].restaurant.name;
+        restPrice = userData.dinnerOptions[i].restaurant.price_range;
+        restLocation = userData.dinnerOptions[i].restaurant.location.address;
+        restRating = userData.dinnerOptions[i].restaurant.user_rating.aggregate_rating;
 
-console.log(createTableRowMovie("choiceID", "Showtime At the Movies", ["7:30 PM", "8:15 PM", "9:45 PM", "10:35 PM"], "405 Watch This Way", "5.9"));
-console.log(createTableRowRestaruant("restaurantID", "Chow Down Here", "$$", "350 Dinner Way", "4.5"));
+        var newRestaurantRow = createTableRowRestaurant(i, restName, restPrice, restLocation, restRating);
+     
+        $("#restaurant-choices-list > tbody").append(newRestaurantRow);
+    }
+
+}
+
 
 // ---------------------------------------------------------------------------------------------------------------
 // Create & Format table row data for movie API data
-// arguments: movie name, times, location, miles away
+// arguments: movie name, times, location, rating
 // returns: html setup of the new table row with the table data passed in the arugments section
 // ---------------------------------------------------------------------------------------------------------------
-function createTableRowMovie(id, name, timesArray, location, milesAway) {
+function createTableRowMovie(id, name, timesArray, location, rating) {
 
     var timesHTMLList = "<ul>";
 
@@ -195,18 +250,18 @@ function createTableRowMovie(id, name, timesArray, location, milesAway) {
             <td>${name}</td>
             <td>${timesHTMLList}</td>
             <td>${location}</td>
-            <td>${milesAway}</td>
+            <td>${rating}</td>
         </tr>
     `;
 
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// Create & Format table row data for resturant API data
-// arguments: restauratn name, price range, location (address), miles away
+// Create & Format table row data for restaurant API data
+// arguments: restaurant name, price range, location (address), rating
 // returns: html setup of the new table row with the table data passed in the arugments section
 // ---------------------------------------------------------------------------------------------------------------
-function createTableRowRestaruant(id, name, price, location, milesAway) {
+function createTableRowRestaurant(id, name, price, location, rating) {
 
     // use ` instead of ' or " to be able to add the variable names into the string and it interpret them for the values passed in
     return `
@@ -214,20 +269,8 @@ function createTableRowRestaruant(id, name, price, location, milesAway) {
             <td>${name}</td>
             <td>${price}</td>
             <td>${location}</td>
-            <td>${milesAway}</td>
+            <td>${rating}</td>
         </tr>
     `;
 
 }
-
-
-
-
-
-// --------------------------------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------------------------------
-// 
-// End of Brea's working area
-//
-// --------------------------------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------------------------------
