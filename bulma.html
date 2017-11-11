@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	
+	<!-- Font Awesome Icon Link -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  	<!-- Bulma CSS Framework Link -->
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.css">
+	<link href="assets/css/styles.css" rel="stylesheet">
+
+    <title>Date Night App</title>
+    
+</head>
+
+<body>
+
+	<!-- jQuery Library added -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="assets/javascript/scripts.js"></script>
+
+	<!-- container div encompasses entire body contents -->
+	<div id="container">
+
+		<!-- block div to handle spacing from other elements on the page -->
+		<!-- title area -->
+		<div class="block">
+			<!-- hero / title area -->
+			<section class="hero is-primary">
+		        <div class="hero-body">
+					<div class="container">
+			            <h1 class="title is-1">Dates R Us</h1>
+			            <h2 class="subtitle is-4">Dinner and a Movie</h2>
+		            </div>
+		        </div>
+			</section>
+		</div>  <!-- end title area -->
+
+		<!-- use this area to show error messages to the user instead of alerts -->
+		<!-- need to hide this initially and only show when error encountered -->
+		<div class="block err-msg" id="form-err">
+			<div class="notification">
+				<button class="delete err-exit"></button>
+				***Hide this initially*** Here to display error messages to the user from the form area
+			</div>
+		</div>
+
+		<!-- block div for user input form area -->
+		<div class="block">
+			
+			<!-- card to format form area -->
+			<div class="card">
+				<div class="card-content">
+					<p class="title">
+						Give us your preferences!
+					</p>
+
+					<!-- user input form start -->
+					<form>
+
+					<!-- columns for the form fields to line them on page side by side -->
+					<div class="columns">
+						<!-- column 1 area -->
+						<div class="column">
+							<!-- Zip Code input -->
+							 <div class="field">
+								<label class="label">Zip Code:</label>
+								<input type="text" id="zip-input" class="input" placeholder="Enter Zip">
+							</div>
+						</div>  <!-- end column 1 div -->
+
+						<!-- column 2 area -->
+						<div class="column">
+							<!-- Genre Input section -->
+							<div class="field">
+								<label class="label">Movie Genre: </label>
+
+								<!-- Genre Dropdown list -->
+								<div class="field">
+									<p class="control is-expanded">
+										<span class="select is-fullwidth" id="movie-genre-list">
+											<select>  <!-- class="is-primary" to add teal highlight to the select control -->
+												<!-- need to add options dynamically when page is loaded? -->
+												<option>Select Genre here</option>
+												<option>Simple</option>
+												<option>Standard</option>
+												<option>Super</option>
+											</select>
+										</span>
+									</p>
+								</div>  <!-- end dropdown input -->
+								
+								<!-- input field for user to type in their own genre -->
+								<div class="field has-addons">
+									<p class="control is-expanded">
+										<!-- user can input a genre if not in the list -->
+										<input type="text" id="movie-user-input-genre" class="input" placeholder="Give us a new genre ...">
+									</p>
+									<p class="control">
+										<!-- button to handle add genre from user -->
+										<a href="" class="button is-primary" id="add-new-genre">Add Genre</a>
+									</p>
+								</div>  <!-- end genre user input -->
+							</div> <!-- end Genre Input section -->
+						</div>  <!-- end column 2 div -->
+
+
+						<!-- column 3 area -->
+						<div class="column">
+							<!-- Food Type / Cuisine Input section -->
+							<div class="field">
+								<label class="label">Cuisine: </label>
+
+								<!-- Food Type Dropdown list -->
+								<div class="field">
+									<p class="control is-expanded">
+										<span class="select is-fullwidth" id="resturant-type-list">
+											<select>
+												<!-- need to add options dynamically when page is loaded? -->
+												<option>Select Cuisine here</option>
+												<option>Simple</option>
+												<option>Standard</option>
+												<option>Super</option>
+											</select>
+										</span>
+									</p>
+								</div>  <!-- end dropdown input -->
+								
+								<!-- input field for user to type in their own food option -->
+								<div class="field has-addons">
+									<p class="control is-expanded">
+										<!-- user can input a food type if not in the list -->
+										<input type="text" id="food-type-user-input" class="input" placeholder="Add your own food option ...">
+									</p>
+									<p class="control">
+										<!-- button to handle add food type from user -->
+										<a href="" class="button is-primary" id="add-new-food-type">Add Cuisine</a>
+									</p>
+								</div>  <!-- end food type user input -->
+
+							</div> <!-- end Food Input section -->
+						</div>  <!-- end column 2 div -->
+					</div> <!-- end columns div -->
+
+					<!-- button group for form submit / clear functions -->
+					<div class="field is-grouped">
+					  <p class="control">
+					    <input class="button is-primary" type="submit">
+					  </p>
+					  <p class="control">
+					    <input class="button is-primary is-outlined" type="reset">
+					  </p>
+					</div>
+						
+					</form>
+				</div> <!-- end card content -->
+				<!-- footer option here in case we want to add something to the bulma view -->
+				<!-- <footer class="card-footer">
+					<p class="card-footer-item">
+						<span>
+						<a href=""><i class="fa fa-twitter"></i>Twitter</a>
+						</span>
+					</p>
+					<p class="card-footer-item">
+						<span>
+						<a href=""><i class="fa fa-facebook"></i>Facebook</a>
+						</span>
+					</p>
+				</footer> -->
+
+			</div> <!-- end full card div for form area -->
+		</div> <!-- end user form block div -->
+
+
+		<!-- block div for movie / resturant choices list area -->
+		<div class="block">
+			<!-- columns for the movie / resturant card areas -->
+			<div class="columns">
+				<!-- column 1 area -->
+				<div class="column">
+
+					<!-- use this area to show error messages to the user instead of alerts -->
+					<!-- need to hide this initially and only show when error encountered -->
+					<div class="block err-msg" id="movie-list-err">
+						<div class="notification">
+							<button class="delete err-exit"></button>
+							***Hide this initially*** Here to display error messages to the user from the movie list area
+						</div>
+					</div>
+
+					<!-- card to format the movie choice list area -->
+					<div class="card">
+						<div class="card-content">
+							<p class="title">
+								Pick Your Movie!
+							</p>
+							
+							<!-- table for movie choices -->
+							<table class="table">
+							  <thead>
+							    <tr>
+							      <th>Movie Name</th>
+							      <th>Times</th>
+							      <th>Location</th>
+							      <th>Miles Away</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td>Heat</td>
+							      <td>
+									<ul>
+										<li>8:30pm</li>
+										<li>9:40pm</li>
+										<li>10:10pm</li>
+									</ul>
+							      </td>
+							      <td>800 North South Ave.</td>
+							      <td>6.2</td>
+							    </tr>
+							    <tr class="is-selected">  <!-- use the "is-selected" class in JS -->
+							      <td>The Departed</td>
+							      <td>
+									<ul>
+										<li>7:30pm</li>
+										<li>9:20pm</li>
+										<li>11:00pm</li>
+									</ul>
+							      </td>
+							      <td>400 Atlantic Blvd</td>
+							      <td>8.6</td>
+							    </tr>
+							    <tr>
+							      <td>Goodfellas</td>
+							      <td>
+							      	<ul>
+							      		<li>6:15pm</li>
+							      		<li>7:25pm</li>
+							      		<li>12:10pm</li>
+							      	</ul>
+							      </td>
+							      <td>902 Movie Screen Trail</td>
+							      <td>2.6</td>
+							    </tr>
+							  </tbody>
+							</table>
+
+
+							<!-- in case we want to setup with radio buttons ... might be easier to listen for table click from user though -->
+<!-- 							<div class="control">
+								<label class="radio">
+								    <input type="radio" name="answer">
+								    Yes
+								</label>
+								<label class="radio">
+								    <input type="radio" name="answer">
+								    No
+								</label>
+							</div> -->
+
+						</div>  <!-- end card content area -->
+					</div>  <!-- end movie card choice list area -->
+				</div>  <!-- end column 1 area -->
+
+				<!-- column 2 area -->
+				<div class="column">
+
+					<!-- use this area to show error messages to the user instead of alerts -->
+					<!-- need to hide this initially and only show when error encountered -->
+					<div class="block err-msg" id="restaurant-list-err">
+						<div class="notification">
+							<button class="delete err-exit"></button>
+							***Hide this initially*** Here to display error messages to the user from the resturant list area
+						</div>
+					</div>
+
+					<!-- card to format the restaurant choice list area -->
+					<div class="card">
+						<div class="card-content">
+							<p class="title">
+								What's For Dinner?
+							</p>
+							
+							<!-- table for restaurant choices -->
+							<table class="table">
+							  <thead>
+							    <tr>
+							      <th>Restaurant</th>
+							      <th>Price</th>
+							      <th>Location</th>
+							      <th>Miles Away</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td>Pita Mona</td>
+							      <td>$</td>
+							      <td>800 North South Ave.</td>
+							      <td>6.2</td>
+							    </tr>
+							    <tr>
+							      <td>Euro Cafe</td>
+							      <td>$$</td>
+							      <td>400 Atlantic Blvd</td>
+							      <td>8.6</td>
+							    </tr>
+							    <tr class="is-selected">  <!-- use the "is-selected" class in JS -->
+							      <td>Taverna Angora</td>
+							      <td>$$$</td>
+							      <td>902 Movie Screen Trail</td>
+							      <td>2.6</td>
+							    </tr>
+							  </tbody>
+							</table>
+
+							<!-- in case we want to setup with radio buttons ... might be easier to listen for table click from user though -->
+<!-- 							<div class="control">
+								<label class="radio">
+								    <input type="radio" name="answer">
+								    Yes
+								</label>
+								<label class="radio">
+								    <input type="radio" name="answer">
+								    No
+								</label>
+							</div> -->
+
+						</div>  <!-- end card content area -->
+					</div>  <!-- end restaurant card choice list area -->
+				</div>  <!-- end column 2 area -->
+			</div>  <!-- end columns div for movie / resturant choices list area-->
+		</div>  <!-- end block div for movie / resturant choices list area-->
+
+
+		<!-- block div for movie / resturant final choice details area -->
+		<div class="block">
+
+			<!-- columns for the movie / resturant final details card areas -->
+			<div class="columns">
+				
+				<!-- column 1 area -->
+				<div class="column">
+					<!-- card to format the movie final details area -->
+					<div class="card">
+						<div class="card-content">
+							<p class="title notification is-primary">
+								Enjoy the Show!
+								<br><span class="subtitle" id="movie-final-pick-title">Movie Title Here</span>
+							</p>
+							
+							<!-- need to add elements here for final movie details -->
+							<!-- not sure how we will decide to display these items -->
+							<!-- maybe we can use a ul list w/ the different details?? -->
+							<ul id="final-movie-details">
+								<li>Theatre Name</li>
+								<li>Address</li>
+								<li>Map</li>
+								<li>Links to Times for Tickets to be ordered here?</li>
+							</ul>
+
+						</div>  <!-- end card content area -->
+					</div>  <!-- end movie card final details area -->
+				</div>  <!-- end column 1 area -->
+
+				<!-- column 2 area -->
+				<div class="column">
+					<!-- card to format the restaurant final details area -->
+					<div class="card">
+						<div class="card-content">
+							<p class="title notification is-primary">
+								Chow Down!
+								<br><span class="subtitle" id="restaurant-final-pick-title">Restaurant Name Here</span>
+							</p>
+							
+							<!-- need to add elements here for final restaurant details -->
+							<!-- not sure how we will decide to display these items -->
+							<!-- maybe we can use a ul list w/ the different details?? -->
+							<ul id="final-restaurant-details">
+								<li>Address</li>
+								<li>Map</li>
+								<li>Link to menu / website here?</li>
+							</ul>
+
+						</div>  <!-- end card content area -->
+					</div>  <!-- end restaurant card final details area -->
+				</div>  <!-- end column 2 area -->
+
+
+			</div>  <!-- end columns div for movie / resturant final details area-->
+		</div>  <!-- end block div for movie / resturant final details area-->
+
+
+
+	</div>  <!-- container end -->
+
+</body>
+
+</html>
