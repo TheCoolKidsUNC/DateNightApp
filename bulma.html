@@ -59,7 +59,7 @@
 					</p>
 
 					<!-- user input form start -->
-					<form>
+					<form id='dateForm'>
 
 					<!-- columns for the form fields to line them on page side by side -->
 					<div class="columns">
@@ -75,7 +75,7 @@
 						<!-- column 2 area -->
 						<div class="column">
 							<!-- Genre Input section -->
-							<div class="field">
+							<div class="field">	
 								<label class="label">Movie Genre: </label>
 
 								<!-- Genre Dropdown list -->
@@ -84,10 +84,10 @@
 										<span class="select is-fullwidth" id="movie-genre-list">
 											<select>  <!-- class="is-primary" to add teal highlight to the select control -->
 												<!-- need to add options dynamically when page is loaded? -->
-												<option>Select Genre here</option>
-												<option>Simple</option>
-												<option>Standard</option>
-												<option>Super</option>
+												<option>Comedy</option>
+												<option>Drama</option>
+												<option>Horror</option>
+												<option>Thriller</option>
 											</select>
 										</span>
 									</p>
@@ -120,10 +120,11 @@
 										<span class="select is-fullwidth" id="resturant-type-list">
 											<select>
 												<!-- need to add options dynamically when page is loaded? -->
-												<option>Select Cuisine here</option>
-												<option>Simple</option>
-												<option>Standard</option>
-												<option>Super</option>
+												<option>American</option>
+												<option>French</option>
+												<option>Greek</option>
+												<option>Mexican</option>
+												<option>Thai</option>
 											</select>
 										</span>
 									</p>
@@ -148,7 +149,7 @@
 					<!-- button group for form submit / clear functions -->
 					<div class="field is-grouped">
 					  <p class="control">
-					    <input class="button is-primary" type="submit">
+					    <input class="button is-primary" id='submit' type="submit" disabled="disabled">
 					  </p>
 					  <p class="control">
 					    <input class="button is-primary is-outlined" type="reset">
@@ -392,7 +393,7 @@
 			</div>  <!-- end columns div for movie / resturant final details area-->
 		</div>  <!-- end block div for movie / resturant final details area-->
 
-
+<script type="text/javascript" src="assets/javascript/scripts.js"></script>
 
 	</div>  <!-- container end -->
 

@@ -27,7 +27,6 @@ var validationData = {
     genres: ["action", "adventure", "animation", "comedy", "crime", "documentary", "drama", "family", "fantasy", "history", "horror", "music", "musical", "mystery", "romance", "sci-fi", "thriller", "war", "western"],
 }
 
-
 //get data from Zomato
 var dinnerQuery = function(cuisine, long, lat) {
     var apikey = '5102e337643a0e5250051310c79d40d6';
@@ -69,27 +68,5 @@ var dinnerQuery = function(cuisine, long, lat) {
         }
     });
 })
-
-      $("#add-new-genre").on("click", function(event) {
-        event.preventDefault();
-
-        // This line grabs the input from the textbox
-        var userGenre = $("#movie-user-input-genre").val().trim();
-        console.log(userGenre)
-        $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
-
-    });
-
-      $("#add-new-food-type").on("click", function(event) {
-        event.preventDefault();
-
-        // This line grabs the input from the textbox
-        var userFood = $("#food-type-user-input").val().trim();
-        console.log(userFood)
-        $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
-
-    });
-
-
 //test
 //dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
