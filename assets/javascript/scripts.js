@@ -1,3 +1,4 @@
+
 //Get users' lat and long
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -27,6 +28,7 @@ var validationData = {
     genres: ["action", "adventure", "animation", "comedy", "crime", "documentary", "drama", "family", "fantasy", "history", "horror", "music", "musical", "mystery", "romance", "sci-fi", "thriller", "war", "western"],
 }
 
+
 //Take an array and X number of items; return an array of X random items from the array
 //We can use this to get X random items from the Movie and Dinner APIs
 var testArray = ["a", "b", "c", "d", "e"];
@@ -52,6 +54,12 @@ var dinnerQuery = function(cuisine, long, lat) {
     $.ajax({
         url: url,
         method: 'GET'
+
+    }).done(function(data) {
+        console.log(url);
+        console.log(data);
+    });
+
     }).done(function(data) {        
         userData.dinnerOptions = randomizeArray(data.restaurants, 3);
 
@@ -62,7 +70,55 @@ var dinnerQuery = function(cuisine, long, lat) {
         // added grab api data for table row creation here
         putRestaurantAPIDataIntoTableDiv();
     })
+
 }
+
+  $("#zip-input").on("click", function() {
+
+    var zip = $("#zip-input").val().trim();
+    	console.log(zip);
+
+   });
+
+
+(function() {
+    $('form > input').keyup(function() {
+
+        var empty = false;
+        $('form > input').each(function() {
+            if ($(this).val() == '') {
+                empty = true;
+            }
+        });
+
+        if (empty) {
+            $('#submit').attr('disabled', 'disabled');
+        } else {
+            $('#submit').removeAttr('disabled');
+        }
+    });
+})
+
+      $("#add-new-genre").on("click", function(event) {
+        event.preventDefault();
+
+        // This line grabs the input from the textbox
+        var userGenre = $("#movie-user-input-genre").val().trim();
+        console.log(userGenre)
+        $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
+
+    });
+
+      $("#add-new-food-type").on("click", function(event) {
+        event.preventDefault();
+
+        // This line grabs the input from the textbox
+        var userFood = $("#food-type-user-input").val().trim();
+        console.log(userFood)
+        $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
+
+    });
+
 
 //test
 dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
