@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	
+	<!-- Font Awesome Icon Link -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  	<!-- Bulma CSS Framework Link -->
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.css">
+	<link href="assets/css/styles.css" rel="stylesheet">
+
+    <title>Date Night App</title>
+    
+</head>
+
+<body>
+
+	<!-- container div encompasses entire body contents -->
+	<div id="container">
+
+		<!-- block div to handle spacing from other elements on the page -->
+		<!-- title area -->
+		<div class="block">
+			<!-- hero / title area -->
+			<section class="hero is-primary">
+		        <div class="hero-body">
+					<div class="container">
+			            <h1 class="title">Dates R Us</h1>
+			            <h2 class="subtitle">Dinner and a Movie</h2>
+		            </div>
+		        </div>
+			</section>
+		</div>  <!-- end title area -->
+
+		<!-- block div to handle spacing from other elements on the page -->
+		<!-- use this area to show error messages to the user instead of alerts -->
+		<!-- need to hide this initially and only show when error encountered -->
+		<div class="block err-msg">
+			<div class="notification">
+				<button class="delete err-exit"></button>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, quisquam!
+			</div>
+		</div>
+
+		<!-- block div to handle spacing from other elements on the page -->
+		<div class="block">
+			
+			<!-- card to format form area -->
+			<div class="card">
+				<div class="card-content">
+					<p class="title">
+						Give us your preferences!
+					</p>
+
+					<!-- user input form start -->
+					<form>
+
+					<!-- columns for the form fields to line them on page side by side -->
+					<div class="columns">
+						<!-- column 1 area -->
+						<div class="column">
+							<!-- Zip Code input -->
+							 <div class="field">
+								<label class="label">Zip Code:</label>
+								<input type="text" id="zip-input" class="input" placeholder="Enter Zip">
+							</div>
+						</div>  <!-- end column 1 div -->
+
+						<!-- column 2 area -->
+						<div class="column">
+							<!-- Genre Input section -->
+							<div class="field">
+								<label class="label">Movie Genre: </label>
+
+								<!-- Genre Dropdown list -->
+								<div class="field">
+									<p class="control is-expanded">
+										<span class="select is-fullwidth" id="movie-genre-list">
+											<select>
+												<!-- need to add options dynamically when page is loaded? -->
+												<option>Select Genre here</option>
+												<option>Simple</option>
+												<option>Standard</option>
+												<option>Super</option>
+											</select>
+										</span>
+									</p>
+								</div>  <!-- end dropdown input -->
+								
+								<!-- input field for user to type in their own genre -->
+								<div class="field has-addons">
+									<p class="control is-expanded">
+										<!-- user can input a genre if not in the list -->
+										<input type="text" id="movie-user-input-genre" class="input" placeholder="Give us a new genre ...">
+									</p>
+									<p class="control">
+										<!-- button to handle add genre from user -->
+										<a href="" class="button is-primary" id="add-new-genre">Add Genre</a>
+									</p>
+								</div>  <!-- end genre user input -->
+							</div> <!-- end Genre Input section -->
+						</div>  <!-- end column 2 div -->
+
+
+						<!-- column 3 area -->
+						<div class="column">
+							<!-- Food Type / Cuisine Input section -->
+							<div class="field">
+								<label class="label">Cuisine: </label>
+
+								<!-- Food Type Dropdown list -->
+								<div class="field">
+									<p class="control is-expanded">
+										<span class="select is-fullwidth" id="resturant-type-list">
+											<select>
+												<!-- need to add options dynamically when page is loaded? -->
+												<option>Select Cuisine here</option>
+												<option>Simple</option>
+												<option>Standard</option>
+												<option>Super</option>
+											</select>
+										</span>
+									</p>
+								</div>  <!-- end dropdown input -->
+								
+								<!-- input field for user to type in their own food option -->
+								<div class="field has-addons">
+									<p class="control is-expanded">
+										<!-- user can input a food type if not in the list -->
+										<input type="text" id="food-type-user-input" class="input" placeholder="Add your own food option ...">
+									</p>
+									<p class="control">
+										<!-- button to handle add food type from user -->
+										<a href="" class="button is-primary" id="add-new-food-type">Add Cuisine</a>
+									</p>
+								</div>  <!-- end food type user input -->
+
+							</div> <!-- end Food Input section -->
+						</div>  <!-- end column 2 div -->
+					</div> <!-- end columns div -->
+
+						
+					</form>
+				</div> <!-- end card content -->
+				<!-- footer option here in case we want to add something to the bulma view -->
+				<!-- <footer class="card-footer">
+					<p class="card-footer-item">
+						<span>
+						<a href=""><i class="fa fa-twitter"></i>Twitter</a>
+						</span>
+					</p>
+					<p class="card-footer-item">
+						<span>
+						<a href=""><i class="fa fa-facebook"></i>Facebook</a>
+						</span>
+					</p>
+				</footer> -->
+
+			</div> <!-- end card for form area -->
+
+				
+		</div> <!-- end form block div -->
+
+
+
+	</div>  <!-- container end -->
+
+	<!-- jQuery Library added -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Bootstrap Library added -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="assets/javascript/scripts.js"></script>
+
+</body>
+
+</html>
