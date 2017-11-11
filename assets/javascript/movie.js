@@ -8,15 +8,15 @@ var userData = {
     movieOptions: [],
     movieDecision: [],
 }
-conosole.log(userData);
+console.log(userData);
 //Use these arrays to  validate user input
 var movieValidation = {
     genres: ['action', 'adventure', 'horror', 'scary', 'comedy', 'romance', 'chick flick', 'historical', 'western', 'sci-fi', 'war', ]
 }
 
 var movieQuery = function(genres, long, lat) {
-        var apikey = '40e9cece';
-        var base = 'https://www.omdbapi.com/?t=';
+        var apikey = 'd928a0b7d0a845298ec26a9121d6724f';
+        var base = 'https://api.themoviedb.org/3/discover/movie?';
         var endpoint = '/search?';
         var url = base + endpoint + 'q=' + genres + '&lat=' + lat + '&long=' + long + '&apikey=' + apikey;
         $.ajax({
