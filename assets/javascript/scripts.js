@@ -1,7 +1,7 @@
 //Get users' lat and long
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-    	console.log(position);
+        console.log(position);
         userData.lat = position.coords.latitude;
         userData.long = position.coords.longitude;
     })
@@ -27,6 +27,22 @@ var validationData = {
     genres: ["action", "adventure", "animation", "comedy", "crime", "documentary", "drama", "family", "fantasy", "history", "horror", "music", "musical", "mystery", "romance", "sci-fi", "thriller", "war", "western"],
 }
 
+//Take an array and X number of items; return an array of X random items from the array
+//We can use this to get X random items from the Movie and Dinner APIs
+var testArray = ["a", "b", "c", "d", "e"];
+
+var randomizeArray = function(array, num) {
+    var oldArr = array;
+    var newArr = [];
+    for (var i = 0; i < num; i++) {
+        var index = Math.floor(Math.random() * array.length);
+        var newItem = oldArr.splice(index, 1);
+        newArr.push(newItem[0]);        
+    }
+   return newArr;
+}
+//
+
 //get data from Zomato
 var dinnerQuery = function(cuisine, long, lat) {
     var apikey = '5102e337643a0e5250051310c79d40d6';
@@ -36,14 +52,15 @@ var dinnerQuery = function(cuisine, long, lat) {
     $.ajax({
         url: url,
         method: 'GET'
-    }).done(function(data) {
-        console.log(url);
-        console.log(data);
+    }).done(function(data) {        
+        userData.movieOptions = randomizeArray(data.restaurants, 3);
+        console.log(userData.movieOptions);
     })
 }
 
 //test
-//dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
+dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
+
 
 
 
@@ -121,6 +138,5 @@ function createTableRowRestaruant(id, name, price, location, milesAway) {
 //
 // --------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------
-
 
 
