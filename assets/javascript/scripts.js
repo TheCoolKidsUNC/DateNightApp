@@ -1,3 +1,12 @@
+//Get users' lat and long
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+    	console.log(position);
+        userData.lat = position.coords.latitude;
+        userData.long = position.coords.longitude;
+    })
+}
+
 //Form will add these values
 var userData = {
     city: null,
@@ -20,15 +29,15 @@ var validationData = {
 
 //get data from Zomato
 var dinnerQuery = function(cuisine, long, lat) {
-	var apikey = '5102e337643a0e5250051310c79d40d6';
-	var base = 'https://developers.zomato.com/api/v2.1';
-	var endpoint = '/search?';
-	var url = base+endpoint+'q='+cuisine+'&lat='+lat+'&long='+long+'&apikey='+apikey;
+    var apikey = '5102e337643a0e5250051310c79d40d6';
+    var base = 'https://developers.zomato.com/api/v2.1';
+    var endpoint = '/search?';
+    var url = base + endpoint + 'q=' + cuisine + '&lat=' + lat + '&long=' + long + '&apikey=' + apikey;
     $.ajax({
         url: url,
         method: 'GET'
     }).done(function(data) {
-    	console.log(url);
+        console.log(url);
         console.log(data);
     })
 }
