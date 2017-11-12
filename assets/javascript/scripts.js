@@ -27,79 +27,79 @@ var validationData = {
     cuisines: ["african", "american", "amish", "argentine", "armenian", "asian", "bbq", "bagels", "bakery", "bar food", "belgian", "beverages", "brazilian", "breakfast", "british", "burger", "cafe", "cajun", "california", "cantonese", "caribbean", "chinese", "coffee and tea", "colombian", "cuban", "deli", "desserts", "dim sum", "diner", "donuts", "drinks only", "eastern european", "ethiopian", "european", "fast food", "filipino", "fish and chips", "french", "frozen yogurt", "fusion", "german", "greek", "healthy food", "ice cream", "indian", "international", "irish", "italian", "jamaican", "japanese", "kebab", "korean", "latin american", "lebanese", "mediterranean", "mexican", "middle eastern", "mongolian", "moroccan", "nepalese", "pakistani", "peruvian", "pizza", "pub food", "ramen", "salad", "sandwich", "seafood", "soul food", "south american", "south indian", "southern", "southwestern", "spanish", "steak", "sushi", "taco", "tapas", "tea", "teriyaki", "tex-mex", "thai", "turkish", "vegetarian", "venezuelan", "vietnamese"],
     genres: [{
             "id": 28,
-            "name": "Action"
+            "name": "action"
         },
         {
             "id": 12,
-            "name": "Adventure"
+            "name": "adventure"
         },
         {
             "id": 16,
-            "name": "Animation"
+            "name": "animation"
         },
         {
             "id": 35,
-            "name": "Comedy"
+            "name": "comedy"
         },
         {
             "id": 80,
-            "name": "Crime"
+            "name": "crime"
         },
         {
             "id": 99,
-            "name": "Documentary"
+            "name": "documentary"
         },
         {
             "id": 18,
-            "name": "Drama"
+            "name": "drama"
         },
         {
             "id": 10751,
-            "name": "Family"
+            "name": "family"
         },
         {
             "id": 14,
-            "name": "Fantasy"
+            "name": "fantasy"
         },
         {
             "id": 36,
-            "name": "History"
+            "name": "history"
         },
         {
             "id": 27,
-            "name": "Horror"
+            "name": "horror"
         },
         {
             "id": 10402,
-            "name": "Music"
+            "name": "music"
         },
         {
             "id": 9648,
-            "name": "Mystery"
+            "name": "mystery"
         },
         {
             "id": 10749,
-            "name": "Romance"
+            "name": "romance"
         },
         {
             "id": 878,
-            "name": "Science Fiction"
+            "name": "science Fiction"
         },
         {
             "id": 10770,
-            "name": "TV Movie"
+            "name": "tv movie"
         },
         {
             "id": 53,
-            "name": "Thriller"
+            "name": "thriller"
         },
         {
             "id": 10752,
-            "name": "War"
+            "name": "war"
         },
         {
             "id": 37,
-            "name": "Western"
+            "name": "western"
         }
     ]
 }
@@ -153,6 +153,17 @@ var movieQuery = function(genre) {
     });
 }   
 
+// this part is what gets the ID number for the genre because the API assigns a ID number to each name
+var genreNumber = function (name) {
+	for (var i = 0; i < validationData.genres.length; i++) {
+		validationData.genres[i]
+		if (validationData.genres[i].name == name){
+			userData.genrePref = validationData.genres[i].id;
+			console.log(userData.genrePref);
+		}
+	}
+}
+	// genreNumber("crime");  FOR testing of calls
 // These calls are for testing purposes
 // They need to be triggered by the submit button eventually
 dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
