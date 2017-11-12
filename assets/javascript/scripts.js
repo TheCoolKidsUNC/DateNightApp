@@ -160,6 +160,7 @@ var movieQuery = function(genre) {
 
         userData.movieOptions = randomizeArray(data.results, 3);
         console.log(userData.movieOptions);
+        putMovieAPIDataIntoTableDiv();
     });
 }   
 
@@ -238,19 +239,19 @@ function putMovieAPIDataIntoTableDiv() {
 
     for (var i = 0; i < userData.movieOptions.length; i++) {
 
-        // movName = userData.movieOptions[i].restaurant.name;
-        // movTimes = userData.movieOptions[i].restaurant.price_range;
-        // movLocation = userData.movieOptions[i].restaurant.location.address;
-        // movRating = userData.movieOptions[i].restaurant.user_rating.aggregate_rating;
+        movName = userData.movieOptions[i].title;
+        movTimes = "none returned"
+        movLocation = "none returned";
+        movRating = userData.movieOptions[i].vote_average;
 
         console.log("movie Name = ", movName);
         console.log("movie Times = ", movTimes);
         console.log("movie Location = ", movLocation);
-        console.log("movie Times = ", movTimes);
+        console.log("movie Rating = ", movRating);
 
-        // var newRestaurantRow = createTableRowRestaurant(i, movName, restPrice, movLocation, movRating);
+        var newRestaurantRow = createTableRowRestaurant(i, movName, movTimes, movLocation, movRating);
      
-        // $("#restaurant-choices-list > tbody").append(newRestaurantRow);
+        $("#movie-choices-list > tbody").append(newRestaurantRow);
     }
 
 }
