@@ -15,7 +15,7 @@ var userData = {
     long: -78.638179, //TEST DATA 
     lat: 35.779590, //TEST DATA
     cuisinePref: 'mexican', //TEST DATA - user's preference
-    genrePref: 18, //user's preference
+    genrePref: 28, //user's preference
     dinnerOptions: [], //list of options from API
     movieOptions: [], //list of options from API
     dinnerDecision: null, //final choice
@@ -133,22 +133,25 @@ var dinnerQuery = function(cuisine, long, lat) {
     })
 }
 
-
+// note the movies pull from TV series movies too. Also the date range function isn't live updates
 var movieQuery = function(genre) {
     var apikey = 'd928a0b7d0a845298ec26a9121d6724f';
-    var base = 'https://api.themoviedb.org/3';
+    var base = 'https://api.themoviedb.org/3';  
     var endpoint = '/discover/movie?';
+    var theater = ' &with_release_type=3';
+    var releaseDate = '&primary_release_date.gte=2017-10-10&primary_release_date.lte=2017-10-30';
     // var url = base + endpoint + 'with_genres=' + genre + '&apikey=' + apikey;
-    var url = base + endpoint + 'api_key=' + apikey + '&language=en-US&sort_by=popularity.desc&page=1&with_genres=' + genre;
+    var url = base + endpoint + 'api_key=' + apikey + '&language=en-US&sort_by=popularity.desc&page=1&with_genres=' + genre + releaseDate + theater;
     $.ajax({
         crossDomain: true,
         url: url,
         method: 'GET'
     }).done(function(data) {
-        console.log(url);
-        console.log(data)
+
+        userData.movieOptions = randomizeArray(data.results, 3);
+        console.log(data.results);
     });
-}
+}   
 
 // These calls are for testing purposes
 // They need to be triggered by the submit button eventually
