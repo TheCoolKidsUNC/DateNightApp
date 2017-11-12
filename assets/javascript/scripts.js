@@ -110,12 +110,22 @@ var validationData = {
 var randomizeArray = function(array, num) {
     var oldArr = array;
     var newArr = [];
+
+    // added validation to check to see if results of API call is less than the # of choices we would like to display
+    if (oldArr.length < num) {
+
+        num = oldArr.length;
+        console.log("length of array lower than num choices = ", num);
+    }
+
     for (var i = 0; i < num; i++) {
         var index = Math.floor(Math.random() * array.length);
         var newItem = oldArr.splice(index, 1);
         newArr.push(newItem[0]);
     }
+
     return newArr;
+
 }
 
 //get data from Zomato
@@ -149,7 +159,8 @@ var movieQuery = function(genre) {
     }).done(function(data) {
 
         userData.movieOptions = randomizeArray(data.results, 3);
-        console.log(data.results);
+        console.log(userData.movieOptions);
+        putMovieAPIDataIntoTableDiv();
     });
 }   
 
@@ -214,6 +225,36 @@ $("#add-new-food-type").on("click", function(event) {
 
 
 
+// ---------------------------------------------------------------------------------------------------------------
+// Grab movie API data and put it in the table
+// arguments: none
+// returns: nothing
+// ---------------------------------------------------------------------------------------------------------------
+function putMovieAPIDataIntoTableDiv() {
+
+    var movName;
+    var movTimes;
+    var movLocation;
+    var movRating;
+
+    for (var i = 0; i < userData.movieOptions.length; i++) {
+
+        movName = userData.movieOptions[i].title;
+        movTimes = "none returned"
+        movLocation = "none returned";
+        movRating = userData.movieOptions[i].vote_average;
+
+        console.log("movie Name = ", movName);
+        console.log("movie Times = ", movTimes);
+        console.log("movie Location = ", movLocation);
+        console.log("movie Rating = ", movRating);
+
+        var newRestaurantRow = createTableRowRestaurant(i, movName, movTimes, movLocation, movRating);
+     
+        $("#movie-choices-list > tbody").append(newRestaurantRow);
+    }
+
+}
 
 // ---------------------------------------------------------------------------------------------------------------
 // Grab restaurant API data and put it in the table
@@ -228,6 +269,8 @@ function putRestaurantAPIDataIntoTableDiv() {
     var restRating;
 
     for (var i = 0; i < userData.dinnerOptions.length; i++) {
+
+        console.log(userData.dinnerOptions[i]);
 
         restName = userData.dinnerOptions[i].restaurant.name;
         restPrice = userData.dinnerOptions[i].restaurant.price_range;
