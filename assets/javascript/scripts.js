@@ -1,13 +1,3 @@
-//Get users' lat and long
-// Commented this out because it's annoying. Have hard typed latt and long in userData for testing.
-// if (navigator.geolocation) {
-//     navigator.geolocation.getCurrentPosition(function(position) {
-//         console.log(position);
-//         userData.lat = position.coords.latitude;
-//         userData.long = position.coords.longitude;
-//     })
-// }
-
 //Form will add these values
 var userData = {
     city: null,
@@ -180,9 +170,33 @@ var genreNumber = function (name) {
 dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
 movieQuery(userData.genrePref);
 
-$("#zip-input").on("click", function() {
-    var zip = $("#zip-input").val().trim();
-    console.log(zip);
+//Use function to validate zip code, and, if valid, convert to lat and long.
+var zipToCoordinates = function(zip) {    
+    var url = 'http://api.zippopotam.us/us/'+zip;
+    $.ajax({        
+        url:url,
+        method:'GET',
+        error: function(){
+            //Here is where we need code to populate the error message saying zip code is invalid;
+            console.log('invalid zip code');
+        }
+    }).done(function(data){
+        userData.lat = data.places[0].latitude;
+        userData.long = data.places[0].longitude;
+    })
+}
+
+//Handle click of geolocation button; disable zip code field if successful
+$("#geo-input").on("click", function(){
+    event.preventDefault();
+    if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        userData.lat = position.coords.latitude;
+        userData.long = position.coords.longitude;
+        $("#zip-input").prop("disabled", true);
+        $("#geo-input").text("Got your coordinates!");
+    })
+    }
 });
 
 (function() {
