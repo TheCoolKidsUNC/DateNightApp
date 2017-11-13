@@ -1,13 +1,3 @@
-//Get users' lat and long
-// Commented this out because it's annoying. Have hard typed latt and long in userData for testing.
-// if (navigator.geolocation) {
-//     navigator.geolocation.getCurrentPosition(function(position) {
-//         console.log(position);
-//         userData.lat = position.coords.latitude;
-//         userData.long = position.coords.longitude;
-//     })
-// }
-
 //Form will add these values
 var userData = {
     city: null,
@@ -198,6 +188,40 @@ function movieQuery(genre) {
 //     console.log(zip);
 // });
 
+//Use function to validate zip code, and, if valid, convert to lat and long.
+// var zipToCoordinates = function(zip) {    
+function zipToCoordinates(zip) {
+    var url = 'http://api.zippopotam.us/us/'+zip;
+    $.ajax({        
+        url:url,
+        method:'GET',
+        error: function(){
+            //Here is where we need code to populate the error message saying zip code is invalid;
+            console.log('invalid zip code');
+        },
+        success: function(data){
+        console.log("zip cordinates completed");
+        userData.lat = data.places[0].latitude;
+        userData.long = data.places[0].longitude;
+        console.log("zipcords = ", userData.lat, userData.long);
+        },
+        async: false,
+    })
+}
+
+//Handle click of geolocation button; disable zip code field if successful
+$("#geo-input").on("click", function(){
+    event.preventDefault();
+    if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        userData.lat = position.coords.latitude;
+        userData.long = position.coords.longitude;
+        $("#zip-input").prop("disabled", true);
+        $("#geo-input").text("Got your coordinates!");
+    })
+    }
+});
+
 (function() {
     $('form > input').keyup(function() {
 
@@ -251,6 +275,12 @@ $("#submit").on("click", function(e) {
     console.log("submit button clicked");
 
     userData.zipCode = $("#zip-input").val().trim();
+
+    console.log("zipcode entered = ", userData.zipCode);
+
+    // pass zip code to get lat / long coordinates
+    zipToCoordinates(userData.zipCode);
+    // console.log("coordinates = ", userData.long, userData.lat);
     
     var genreChoice = $("#movie-genre-list").find(":selected").text();
     
