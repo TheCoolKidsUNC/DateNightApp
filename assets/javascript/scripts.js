@@ -246,6 +246,11 @@ $("#add-new-genre").on("click", function(event) {
     // This line grabs the input from the textbox
     var userGenre = $("#movie-user-input-genre").val().trim();
     console.log(userGenre)
+
+    // ----------------------------------------------------------------------------
+    // need to add validation here to check if input from user can be added to list
+    // ----------------------------------------------------------------------------
+
     $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
 
 });
@@ -256,6 +261,11 @@ $("#add-new-food-type").on("click", function(event) {
     // This line grabs the input from the textbox
     var userFood = $("#food-type-user-input").val().trim();
     console.log(userFood)
+
+    // ----------------------------------------------------------------------------
+    // need to add validation here to check if input from user can be added to list
+    // ----------------------------------------------------------------------------
+
     $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
 
 });

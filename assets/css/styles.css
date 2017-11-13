@@ -1,0 +1,6 @@
+
+.hidden {
+
+	display: none;  /* this will hide the div and act like it isn't on the DOM */
+	/*visibility: hidden;*/  /* this will hide the div but keep the space for the element still showing on the page */
+}
