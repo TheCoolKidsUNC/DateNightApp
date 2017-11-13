@@ -95,6 +95,42 @@ var validationData = {
 }
 
 
+// ---------------------------------------------------------------------------------------------------------------
+// Event Handler for on document ready / page load 
+// Run dropdown list load function
+// arguments: none
+// returns: nothing
+// ---------------------------------------------------------------------------------------------------------------
+$(document).ready(function(){
+
+    // define # of items that will be returned for the dropdown list
+    var listLength = 10;
+    
+    // create new array w/ a list of 10 random genres
+    var genreSelectionList = randomizeArray(validationData.genres, listLength);
+    // console.log ("random list generated ", genreSelectionList);
+
+    // add new array items to the dropdown list on the user input form
+    for (var i = 0; i < genreSelectionList.length; i++) {
+        
+         $("#movie-genre-list > select").append("<option>" + genreSelectionList[i].name + "</option>");
+
+    }
+
+    // create new arrary w/ a list of 10 random food types
+    var foodSelectionList = randomizeArray(validationData.cuisines, listLength);
+    // console.log("random cuisines list ", foodSelectionList);
+
+    // add new array items to the dropdown list on the user input form
+    for (var j = 0; j < foodSelectionList.length; j++) {
+        
+         $("#resturant-type-list > select").append("<option>" + foodSelectionList[j] + "</option>");
+
+    }
+
+});
+
+
 //Take an array and X number of items; return an array of X random items from the array
 //We can use this to get X random items from the Movie and Dinner APIs
 // var randomizeArray = function(array, num) {
