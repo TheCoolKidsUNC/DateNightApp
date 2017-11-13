@@ -107,7 +107,8 @@ var validationData = {
 
 //Take an array and X number of items; return an array of X random items from the array
 //We can use this to get X random items from the Movie and Dinner APIs
-var randomizeArray = function(array, num) {
+// var randomizeArray = function(array, num) {
+function randomizeArray (array, num) {
     var oldArr = array;
     var newArr = [];
 
@@ -116,6 +117,11 @@ var randomizeArray = function(array, num) {
 
         num = oldArr.length;
         console.log("length of array lower than num choices = ", num);
+    }
+
+    if (num === 0) {
+
+        // need to ask user to select another choice here if there are no items in the array??
     }
 
     for (var i = 0; i < num; i++) {
@@ -129,22 +135,29 @@ var randomizeArray = function(array, num) {
 }
 
 //get data from Zomato
-var dinnerQuery = function(cuisine, long, lat) {
+// var dinnerQuery = function(cuisine, long, lat) {
+function dinnerQuery (cuisine, long, lat) {
     var apikey = '5102e337643a0e5250051310c79d40d6';
     var base = 'https://developers.zomato.com/api/v2.1';
     var endpoint = '/search?';
     var url = base + endpoint + 'q=' + cuisine + '&lat=' + lat + '&long=' + long + '&apikey=' + apikey;
+
+    console.log("url dinner = ", url);
+
     $.ajax({
         url: url,
         method: 'GET'
     }).done(function(data) {
+
+        console.log(data);
         userData.dinnerOptions = randomizeArray(data.restaurants, 3);
         putRestaurantAPIDataIntoTableDiv();
     })
 }
 
 // note the movies pull from TV series movies too. Also the date range function isn't live updates
-var movieQuery = function(genre) {
+// var movieQuery = function(genre) {
+function movieQuery(genre) {
     var apikey = 'd928a0b7d0a845298ec26a9121d6724f';
     var base = 'https://api.themoviedb.org/3';  
     var endpoint = '/discover/movie?';
@@ -165,25 +178,25 @@ var movieQuery = function(genre) {
 }   
 
 // this part is what gets the ID number for the genre because the API assigns a ID number to each name
-var genreNumber = function (name) {
-	for (var i = 0; i < validationData.genres.length; i++) {
-		validationData.genres[i]
-		if (validationData.genres[i].name == name){
-			userData.genrePref = validationData.genres[i].id;
-			console.log(userData.genrePref);
-		}
-	}
-}
+// var genreNumber = function (name) {
+// 	for (var i = 0; i < validationData.genres.length; i++) {
+// 		// validationData.genres[i]
+// 		if (validationData.genres[i].name == name){
+// 			userData.genrePref = validationData.genres[i].id;
+// 			console.log(userData.genrePref);
+// 		}
+// 	}
+// }
 	// genreNumber("crime");  FOR testing of calls
 // These calls are for testing purposes
 // They need to be triggered by the submit button eventually
-dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
-movieQuery(userData.genrePref);
+// dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
+// movieQuery(userData.genrePref);
 
-$("#zip-input").on("click", function() {
-    var zip = $("#zip-input").val().trim();
-    console.log(zip);
-});
+// $("#zip-input").on("click", function() {
+//     var zip = $("#zip-input").val().trim();
+//     console.log(zip);
+// });
 
 (function() {
     $('form > input').keyup(function() {
@@ -224,6 +237,57 @@ $("#add-new-food-type").on("click", function(event) {
 });
 
 
+// ---------------------------------------------------------------------------------------------------------------
+// Event Handler for Submit Button Click in User Input form area
+// arguments: none
+// returns: nothing
+// ---------------------------------------------------------------------------------------------------------------
+$("#submit").on("click", function(e) {
+
+    // prevents the page from reloading when the submit button is clicked (default is to reload page)
+    // another way would be to use type="button" in the html page instead of type="submit"
+    e.preventDefault();
+
+    console.log("submit button clicked");
+
+    userData.zipCode = $("#zip-input").val().trim();
+    
+    var genreChoice = $("#movie-genre-list").find(":selected").text();
+    
+    // change the genre entered into the number needed for the api call for movies
+    getGenreNumber(genreChoice.toLowerCase());
+
+    // console.log("genre# = ", userData.genrePref);
+
+    var restTypeUserChoice = $("#resturant-type-list").find(":selected").text();
+    userData.cuisinePref = restTypeUserChoice.toLowerCase();
+    console.log("cuisine selected = ", userData.cuisinePref);
+
+    dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
+    movieQuery(userData.genrePref);
+    
+});
+
+
+// ---------------------------------------------------------------------------------------------------------------
+// Get the string entered by the user and turn it into the corresponding # to use in the movie API call
+// arguments: text selected by user for genre
+// returns: # associated w/ genre text
+// ---------------------------------------------------------------------------------------------------------------
+function getGenreNumber(genreString) {
+
+    for (var i = 0; i < validationData.genres.length; i++) {
+        
+        if (validationData.genres[i].name == genreString){
+
+            userData.genrePref = validationData.genres[i].id;
+            console.log(userData.genrePref);
+        }
+    }
+
+
+}
+
 
 // ---------------------------------------------------------------------------------------------------------------
 // Grab movie API data and put it in the table
@@ -244,10 +308,10 @@ function putMovieAPIDataIntoTableDiv() {
         movLocation = "none returned";
         movRating = userData.movieOptions[i].vote_average;
 
-        console.log("movie Name = ", movName);
-        console.log("movie Times = ", movTimes);
-        console.log("movie Location = ", movLocation);
-        console.log("movie Rating = ", movRating);
+        // console.log("movie Name = ", movName);
+        // console.log("movie Times = ", movTimes);
+        // console.log("movie Location = ", movLocation);
+        // console.log("movie Rating = ", movRating);
 
         var newRestaurantRow = createTableRowRestaurant(i, movName, movTimes, movLocation, movRating);
      
