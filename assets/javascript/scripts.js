@@ -377,6 +377,8 @@ function putMovieAPIDataIntoTableDiv() {
     var movLocation;
     var movRating;
 
+    $("#movie-choices-list > tbody").empty();
+
     for (var i = 0; i < userData.movieOptions.length; i++) {
 
         movName = userData.movieOptions[i].title;
@@ -407,6 +409,8 @@ function putRestaurantAPIDataIntoTableDiv() {
     var restPrice;
     var restLocation;
     var restRating;
+
+    $("#restaurant-choices-list > tbody").empty();
 
     for (var i = 0; i < userData.dinnerOptions.length; i++) {
 
