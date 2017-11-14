@@ -320,8 +320,136 @@ $("#add-new-food-type").on("click", function(event) {
 
 
 // ---------------------------------------------------------------------------------------------------------------
+// Event Handler for Movie Choices Table Row Click
+// arguments: event
+// returns: nothing
+// ---------------------------------------------------------------------------------------------------------------
+$("#movie-choices-list").on("click", "tbody > tr", function(e) {
+
+    console.log("movie-choices-list table row clicked");
+
+    // add is selected class to the choice made
+    $(this).addClass("is-selected");
+
+    // grab array # of the movie choice selected
+    var movieChoiceItem = $(this).attr("id");
+
+    // set user Data movie choice information
+    userData.movieDecision = userData.movieOptions[movieChoiceItem];
+    
+    console.log("final choice info ", userData.movieDecision);
+
+    // empty the table to start clean if other options have been picked previously
+    $("#final-movie-details").empty();
+
+    // set variables for data to be shown in final choice cards/views
+    var movTitle = userData.movieDecision.title;
+    var movPosterPath = userData.movieDecision.poster_path;
+    var movDescription = userData.movieDecision.overview;
+    var movReleased = userData.movieDecision.release_date;
+    var movTimes = "See Movie Times";
+
+    // create image tag & details for poster to be added to final choice details view
+    var movPosterImg = $("<img>");
+    movPosterImg.attr("src", "https://image.tmdb.org/t/p/w185" + movPosterPath);
+    movPosterImg.addClass("center-img-element");
+
+    // create link to google movie times for local theatres
+    var movTimesSearchLink = $("<a>");
+    movTimesSearchLink.attr("href", "#");
+    movTimesSearchLink.attr("alt", movTitle);
+    movTimesSearchLink.attr("target", "_blank");
+    movTimesSearchLink.addClass("bold-text");
+    movTimesSearchLink.text(movTimes);
+
+    // console.log("poster path = ", movPosterImg.attr("src"));
+    
+    // add title to the card title area
+    $("#movie-final-pick-title").text(movTitle);
+    
+    // append new details for selected movie to the final movie details card area
+    $("#final-movie-details").append(movPosterImg);
+    $("#final-movie-details").append("<p><strong>Overview: </strong></p>" + "<p>" +movDescription + "</p>");
+    $("#final-movie-details").append("<p><strong>Release Date: </strong></p>" + "<p>" + movReleased + "</p>");
+    $("#final-movie-details").append("<p><strong>");
+    $("#final-movie-details").append(movTimesSearchLink);
+    $("#final-movie-details").append("</p></strong>");
+
+});
+
+
+// ---------------------------------------------------------------------------------------------------------------
+// Event Handler for Restaurant Choices Table Row Click
+// arguments: event
+// returns: nothing
+// ---------------------------------------------------------------------------------------------------------------
+$("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
+
+    console.log("restaurant-choices-list table row clicked");
+
+    // add is selected class to the choice made
+    $(this).addClass("is-selected");
+
+    // grab array # of the restaurant choice selected
+    var restChoiceItem = $(this).attr("id");
+
+    // set user Data restaurant choice information
+    userData.dinnerDecision = userData.dinnerOptions[restChoiceItem];
+    
+    console.log("final choice info ", userData.dinnerDecision);
+
+    // empty the table to start clean if other options have been picked previously
+    $("#final-restaurant-details").empty();
+
+    // set variables for data to be shown in final choice cards/views
+    var restName = userData.dinnerDecision.restaurant.name;
+    var restPhotoPath = userData.dinnerDecision.restaurant.photos_url; // or .featured_image
+    var restAddressText = userData.dinnerDecision.restaurant.location.address;
+    var restMenuSrc = userData.dinnerDecision.restaurant.menu_url;
+    // var movReleased = userData.dinnerDecision.;
+    var restMenuText = "See Menu";
+
+    // create image tag & details for photo to be added to final choice details view
+    var restPhotoImg = $("<img>");
+    restPhotoImg.attr("src", restPhotoPath);
+    restPhotoImg.attr("alt", restName);
+    restPhotoImg.addClass("center-img-element");
+
+    // create link to google maps for address of restaurant
+    var restAddressLink = $("<a>");
+    restAddressLink.attr("href", "#");
+    restAddressLink.attr("alt", restName);
+    restAddressLink.attr("target", "_blank");
+    restAddressLink.addClass("bold-text");
+    restAddressLink.text(restAddressText);
+
+    // create link to restaurant menu
+    var restMenuLink = $("<a>");
+    restMenuLink.attr("href", restMenuSrc);
+    restMenuLink.attr("alt", restName);
+    restMenuLink.attr("target", "_blank");
+    restMenuLink.addClass("bold-text");
+    restMenuLink.text(restMenuText);
+
+    console.log("poster path = ", restPhotoImg.attr("src"));
+    
+    // add title to the card title area
+    $("#restaurant-final-pick-title").text(restName);
+    
+    // // append new details for selected restaurant to the final restaurant details card area
+    $("#final-restaurant-details").append(restPhotoImg);
+    $("#final-restaurant-details").append(restAddressLink);
+    $("#final-restaurant-details").append("<br>");
+    $("#final-restaurant-details").append(restMenuLink);
+    
+});
+
+
+
+
+// ---------------------------------------------------------------------------------------------------------------
 // Event Handler for Submit Button Click in User Input form area
-// arguments: none
+// arguments: event
 // returns: nothing
 // ---------------------------------------------------------------------------------------------------------------
 $("#submit").on("click", function(e) {
