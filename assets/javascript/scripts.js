@@ -623,3 +623,6 @@ function createTableRowRestaurant(id, name, price, location, rating) {
     `;
 
 }
+
+
+
