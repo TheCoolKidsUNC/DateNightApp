@@ -308,8 +308,66 @@ $("#add-new-food-type").on("click", function(event) {
 
 
 // ---------------------------------------------------------------------------------------------------------------
+// Event Handler for Movie Choices Table Row Click
+// arguments: event
+// returns: nothing
+// ---------------------------------------------------------------------------------------------------------------
+$("#movie-choices-list").on("click", "tbody > tr", function(e) {
+
+    console.log("movie-choices-list table row clicked");
+
+    // add is selected class to the choice made
+    $(this).addClass("is-selected");
+
+    // grab array # of the movie choice selected
+    var movieChoiceItem = $(this).attr("id");
+
+    // set user Data movie choice information
+    userData.movieDecision = userData.movieOptions[movieChoiceItem];
+    
+    console.log("final choice info ", userData.movieDecision);
+
+    // set variables for data to be shown in final choice cards/views
+    var movTitle = userData.movieDecision.title;
+    var movPosterPath = userData.movieDecision.poster_path;
+    var movDescription = userData.movieDecision.overview;
+    var movReleased = userData.movieDecision.release_date;
+    var movTimes = "See Movie Times";
+
+    // create image tag & details for poster to be added to final choice details view
+    var movPosterImg = $("<img>");
+    movPosterImg.attr("src", "https://image.tmdb.org/t/p/w185" + movPosterPath);
+    movPosterImg.addClass("center-img-element");
+
+    // create link to google movie times for local theatres
+    var movTimesSearchLink = $("<a>");
+    movTimesSearchLink.attr("href", "#");
+    movTimesSearchLink.attr("alt", movTitle);
+    movTimesSearchLink.text(movTimes);
+
+    // console.log("poster path = ", movPosterImg.attr("src"));
+    
+    // add title to the card title area
+    $("#movie-final-pick-title").text(userData.movieDecision.title);
+    
+    // append new details for selected movie to the final movie details card area
+    $("#final-movie-details").append(movPosterImg);
+    $("#final-movie-details").append("<p><strong>Overview: </strong></p>" + "<p>" +movDescription + "</p>");
+    $("#final-movie-details").append("<p><strong>Release Date: </strong></p>" + "<p>" + movReleased + "</p>");
+    $("#final-movie-details").append("<p><strong>");
+    $("#final-movie-details").append(movTimesSearchLink);
+    $("#final-movie-details").append("</p></strong>");
+
+});
+
+
+
+
+
+
+// ---------------------------------------------------------------------------------------------------------------
 // Event Handler for Submit Button Click in User Input form area
-// arguments: none
+// arguments: event
 // returns: nothing
 // ---------------------------------------------------------------------------------------------------------------
 $("#submit").on("click", function(e) {
