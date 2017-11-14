@@ -15,3 +15,52 @@
 
 	font-weight: bold;
 }
+
+select {
+    text-transform: capitalize;
+}
+
+select {
+    text-transform: capitalize;
+}
+
+body {
+	background: url("https://webdesignerdepot.s3.amazonaws.com/default-images/5.jpg");
+}
+
+#container {
+	border-style: inset;
+	border-color: gray;
+}
+
+.block {
+	margin: 10px;
+}
+
+h1, h2 {
+	text-align: center;
+}
+
+h1 {
+	font-family: 'Pacifico', cursive;
+}
+
+.card {
+	background-color: #F5F5F5;
+}
+
+.hero-body, {
+	border-style: ridge;
+	border-color: #FAEBD7;
+	border: 2px solid #F0F8FF;
+    border-radius: 8px;
+}
+
+.card-content {
+	text-align: center;
+	font-family: 'Poppins', sans-serif;
+}
+
+
+
+
