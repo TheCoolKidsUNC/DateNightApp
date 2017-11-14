@@ -310,14 +310,19 @@ $("#add-new-food-type").on("click", function(event) {
     event.preventDefault();
 
     // This line grabs the input from the textbox
-    var userFood = $("#food-type-user-input").val().trim();
-    console.log(userFood)
+    var userFood = $("#food-type-user-input").val().trim().toLowerCase();
+    if (validationData.cuisines.includes(userFood)) {
+       $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
+    }
+    else {
+       $("#form-err").show('fast');
+       $("#form-err .notification").append("<span class='error'>We doubt that's a type of food. Try something else?</span>");
+       $("#food-type-user-input").focus(function(){
+            $("#form-err").hide('fast');
+            $("#form-err .notification .error").remove();
+       })
+    }
 
-    // ----------------------------------------------------------------------------
-    // need to add validation here to check if input from user can be added to list
-    // ----------------------------------------------------------------------------
-
-    $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
 
 });
 
