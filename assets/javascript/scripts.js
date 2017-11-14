@@ -73,7 +73,7 @@ var validationData = {
         },
         {
             "id": 878,
-            "name": "science Fiction"
+            "name": "science fiction"
         },
         {
             "id": 10770,
@@ -94,7 +94,6 @@ var validationData = {
     ]
 }
 
-
 // ---------------------------------------------------------------------------------------------------------------
 // Event Handler for on document ready / page load 
 // Run dropdown list load function
@@ -105,11 +104,11 @@ $(document).ready(function(){
 
     // define # of items that will be returned for the dropdown list
     var listLength = 10;
-    
+      
     // create new array w/ a list of 10 random genres
     var genreSelectionList = randomizeArray(validationData.genres, listLength);
     // console.log ("random list generated ", genreSelectionList);
-
+    
     // add new array items to the dropdown list on the user input form
     for (var i = 0; i < genreSelectionList.length; i++) {
         
@@ -135,7 +134,7 @@ $(document).ready(function(){
 //We can use this to get X random items from the Movie and Dinner APIs
 // var randomizeArray = function(array, num) {
 function randomizeArray (array, num) {
-    var oldArr = array;
+    var oldArr = array.slice(0);
     var newArr = [];
 
     // added validation to check to see if results of API call is less than the # of choices we would like to display
@@ -148,10 +147,11 @@ function randomizeArray (array, num) {
     if (num === 0) {
 
         // need to ask user to select another choice here if there are no items in the array??
+
     }
 
     for (var i = 0; i < num; i++) {
-        var index = Math.floor(Math.random() * array.length);
+        var index = Math.floor(Math.random() * oldArr.length);
         var newItem = oldArr.splice(index, 1);
         newArr.push(newItem[0]);
     }
@@ -278,17 +278,29 @@ $("#geo-input").on("click", function(){
 
 $("#add-new-genre").on("click", function(event) {
     event.preventDefault();
-
     // This line grabs the input from the textbox
-    var userGenre = $("#movie-user-input-genre").val().trim();
-    console.log(userGenre)
+    var userGenre = $("#movie-user-input-genre").val().trim().toLowerCase();
 
-    // ----------------------------------------------------------------------------
-    // need to add validation here to check if input from user can be added to list
-    // ----------------------------------------------------------------------------
+    //Check to see if user typed genre exists in validation array.
+    var genreIsValid = false;
+    validationData.genres.forEach(function(item){
+    	if (item.name === userGenre) {
+    		genreIsValid = true;    		
+    	}
+    })
 
-    $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
-
+    if (genreIsValid) {
+    	 //Add choice to the dropdown list
+    	 $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
+    } else {
+    	//Display error message. Error message will disappear and clear when user clicks in Add Genre box!
+    	$("#form-err").show('fast');
+    	$("#form-err .notification").append("<span class='error'>We don't think that's a genre. Try something else.</span>");
+    	$("#movie-user-input-genre").focus(function(){
+    		$("#form-err").hide('fast');
+    		$("#form-err .notification .error").remove();
+    	})
+    }
 });
 
 $("#add-new-food-type").on("click", function(event) {
