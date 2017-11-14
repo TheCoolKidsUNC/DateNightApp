@@ -181,16 +181,19 @@ function dinnerQuery (cuisine, long, lat) {
     })
 }
 
+	// use this for new movie search -----   https://api.themoviedb.org/3/movie/now_playing?api_key=d928a0b7d0a845298ec26a9121d6724f&language=en-US&page=1&region=US
+// '/discover/movie?';
 // note the movies pull from TV series movies too. Also the date range function isn't live updates
 // var movieQuery = function(genre) {
 function movieQuery(genre) {
     var apikey = 'd928a0b7d0a845298ec26a9121d6724f';
     var base = 'https://api.themoviedb.org/3';  
-    var endpoint = '/discover/movie?';
+    var endpoint = '/movie/now_playing?'; 
     var theater = ' &with_release_type=3';
     var releaseDate = '&primary_release_date.gte=2017-10-10&primary_release_date.lte=2017-10-30';
+    var region = '&region=US';
     // var url = base + endpoint + 'with_genres=' + genre + '&apikey=' + apikey;
-    var url = base + endpoint + 'api_key=' + apikey + '&language=en-US&sort_by=popularity.desc&page=1&with_genres=' + genre + releaseDate + theater;
+    var url = base + endpoint + 'api_key=' + apikey + '&language=en-US&sort_by=popularity.desc&page=1&with_genres=' + genre + region ;
     $.ajax({
         crossDomain: true,
         url: url,
