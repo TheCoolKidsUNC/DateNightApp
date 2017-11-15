@@ -217,7 +217,12 @@ function zipToCoordinates(zip) {
         method: 'GET',
         error: function() {
             //Here is where we need code to populate the error message saying zip code is invalid;
-            console.log('invalid zip code');
+        $("#form-err").show('fast');
+        $("#form-err .notification").append("<span class='error'>Sorry. That's not a valid zip code.</span>");
+        $("#zip-input").focus(function() {
+            $("#form-err").hide('fast');
+            $("#form-err .notification .error").remove();
+        })
         },
         success: function(data) {
             console.log("zip cordinates completed");
@@ -432,8 +437,14 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
 
 });
 
-
-
+//---------------------------------------------------------------------
+// Convert zip to coordinates when the user clicks out of zip code.
+//
+//---------------------------------------------------------------------
+$("#zip-input").focusout(function(){
+      userData.zipCode = $("#zip-input").val().trim();
+      zipToCoordinates(userData.zipCode);	
+})
 
 // ---------------------------------------------------------------------------------------------------------------
 // Event Handler for Submit Button Click in User Input form area
@@ -447,15 +458,7 @@ $("#submit").on("click", function(e) {
     e.preventDefault();
 
     console.log("submit button clicked");
-
-    userData.zipCode = $("#zip-input").val().trim();
-
-    console.log("zipcode entered = ", userData.zipCode);
-
-    // pass zip code to get lat / long coordinates
-    zipToCoordinates(userData.zipCode);
-    // console.log("coordinates = ", userData.long, userData.lat);
-
+       
     var genreChoice = $("#movie-genre-list").find(":selected").text();
 
     // change the genre entered into the number needed for the api call for movies
