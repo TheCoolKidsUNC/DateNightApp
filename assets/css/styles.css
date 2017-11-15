@@ -34,7 +34,7 @@ body {
 }
 
 .block {
-	margin: 10px;
+	margin: 20px;
 }
 
 h1, h2 {
@@ -49,17 +49,25 @@ h1 {
 	background-color: #F5F5F5;
 }
 
-.hero-body, {
-	border-style: ridge;
-	border-color: #FAEBD7;
-	border: 2px solid #F0F8FF;
-    border-radius: 8px;
-}
-
 .card-content {
 	text-align: center;
 	font-family: 'Poppins', sans-serif;
 }
+
+#submit {
+	background-color: #0066cc !important;
+}
+
+.final-movie-details {
+	background-color: #0066cc !important
+}
+
+.table tr.is-selected {
+    background-color: #0066cc;
+    color: #fff;
+}
+
+
 
 
 

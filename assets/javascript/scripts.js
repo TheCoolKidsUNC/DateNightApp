@@ -147,7 +147,7 @@ function dinnerQuery(cuisine, long, lat) {
     var apikey = '5102e337643a0e5250051310c79d40d6';
     var base = 'https://developers.zomato.com/api/v2.1';
     var endpoint = '/search?';
-    var url = base + endpoint + 'q=' + cuisine + '&lat=' + lat + '&long=' + long + '&apikey=' + apikey;
+    var url = base + endpoint + 'q=' + cuisine + '&lat=' + lat + '&lon=' + long + '&apikey=' + apikey;
 
     console.log("url dinner = ", url);
 
@@ -212,7 +212,12 @@ function zipToCoordinates(zip) {
         method: 'GET',
         error: function() {
             //Here is where we need code to populate the error message saying zip code is invalid;
-            console.log('invalid zip code');
+        $("#form-err").show();        
+        $("#form-err .notification").html("<span class='error'>Sorry. That's not a valid zip code.</span>");
+        focusError();
+        $("#zip-input").focus(function() {
+            clearErrors();            
+        })
         },
         success: function(data) {
             console.log("zip cordinates completed");
@@ -226,6 +231,7 @@ function zipToCoordinates(zip) {
 
 //Handle click of geolocation button; disable zip code field if successful
 $("#geo-input").on("click", function() {
+	clearErrors();
     event.preventDefault();
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -270,16 +276,24 @@ $("#add-new-genre").on("click", function(event) {
 
     if (genreIsValid) {
         //Add choice to the dropdown list
-        $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
+        $("#movie-genre-list > select").prepend("<option>" + userGenre + "</option>");
+        $("#movie-genre-list > select > option:eq(0)").attr('selected', true);
+
     } else {
         //Display error message. Error message will disappear and clear when user clicks in Add Genre box!
         $("#form-err").show('fast');
-        $("#form-err .notification").append("<span class='error'>We don't think that's a genre. Try something else.</span>");
+        $("#form-err .notification").html("<span class='error'>We don't think that's a genre. Try something else.</span>");
+        focusError();
         $("#movie-user-input-genre").focus(function() {
             $("#form-err").hide('fast');
             $("#form-err .notification .error").remove();
         })
     }
+
+    $("#movie-user-input-genre").val("");
+
+
+
 });
 
 $("#add-new-food-type").on("click", function(event) {
@@ -288,16 +302,19 @@ $("#add-new-food-type").on("click", function(event) {
     // This line grabs the input from the textbox
     var userFood = $("#food-type-user-input").val().trim().toLowerCase();
     if (validationData.cuisines.includes(userFood)) {
-        $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
+        $("#resturant-type-list > select").prepend("<option>" + userFood + "</option>");
+        $("#resturant-type-list > select > option:eq(0)").attr('selected', true);
+        
     } else {
         $("#form-err").show('fast');
-        $("#form-err .notification").append("<span class='error'>We doubt that's a type of food. Try something else?</span>");
+        $("#form-err .notification").html("<span class='error'>We doubt that's a type of food. Try something else?</span>");
+        focusError();
         $("#food-type-user-input").focus(function() {
-            $("#form-err").hide('fast');
-            $("#form-err .notification .error").remove();
+            clearErrors();
         })
     }
 
+    $("#food-type-user-input").val("");
 
 });
 
@@ -310,6 +327,9 @@ $("#add-new-food-type").on("click", function(event) {
 $("#movie-choices-list").on("click", "tbody > tr", function(e) {
 
     console.log("movie-choices-list table row clicked");
+
+    // remove all "is-selected" classes from the table rows
+    $("#movie-choices-list .is-selected").removeClass("is-selected");
 
     // add is selected class to the choice made
     $(this).addClass("is-selected");
@@ -370,6 +390,9 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
 
     console.log("restaurant-choices-list table row clicked");
 
+    // remove all "is-selected" classes from the table rows
+    $("#restaurant-choices-list .is-selected").removeClass("is-selected");
+
     // add is selected class to the choice made
     $(this).addClass("is-selected");
 
@@ -398,17 +421,18 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
     restPhotoImg.attr("alt", restName);
     restPhotoImg.addClass("center-img-element");
 
-    // create link to google maps for address of restaurant
+    // create link to google for address of restaurant
     var restAddressLink = $("<a>");
-    restAddressLink.attr("href", "#");
+    restAddressLink.attr("href", "https://www.google.com/search?q=" + restName + " " + restAddressText);
     restAddressLink.attr("alt", restName);
     restAddressLink.attr("target", "_blank");
     restAddressLink.addClass("bold-text");
     restAddressLink.text(restAddressText);
 
-    // create link to restaurant menu
+    // create link to restaurant menu on google
     var restMenuLink = $("<a>");
-    restMenuLink.attr("href", restMenuSrc);
+    // restMenuLink.attr("href", restMenuSrc); // menu link from api data
+    restMenuLink.attr("href", "https://www.google.com/search?q=" + restName + " menu");
     restMenuLink.attr("alt", restName);
     restMenuLink.attr("target", "_blank");
     restMenuLink.addClass("bold-text");
@@ -427,15 +451,50 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
 
 });
 
+//Clear out error message above form. Used in various places.
+function clearErrors () {
+	 $("#form-err").hide('fast');
+     $("#form-err .notification .error").remove();
+}
 
+//Scroll up to error message if it's out of view.
+function focusError () {
+	if (scrollValue > 170) {
 
+	$('html, body').animate({
+        scrollTop: $("#form-err").offset().top
+    }, 300);
+	}
+}
+
+//used in focusError function.
+var scrollValue;
+$(window).scroll(function (event) {
+    scrollValue = $(window).scrollTop();
+});
+
+$('select').focus(function(){
+	clearErrors();
+})
+
+//reset form, clear out location data, and reset geolocation button
+$(":reset").on("click", function(){
+	clearErrors();
+	userData.long = null;
+	userData.lat = null;
+	userData.zipCode = null;
+	$("#zip-input").prop("disabled", false);
+	$("#geo-input").text("Get my current location");
+});
 
 // ---------------------------------------------------------------------------------------------------------------
 // Event Handler for Submit Button Click in User Input form area
 // arguments: event
 // returns: nothing
 // ---------------------------------------------------------------------------------------------------------------
+
 $("#submit").on("click", function(e) {
+	clearErrors();
 
     // prevents the page from reloading when the submit button is clicked (default is to reload page)
     // another way would be to use type="button" in the html page instead of type="submit"
@@ -443,14 +502,24 @@ $("#submit").on("click", function(e) {
 
     console.log("submit button clicked");
 
-    userData.zipCode = $("#zip-input").val().trim();
+    //Validate zip code if user has typed one in, and if valid convert to lat long
+    var zipVal = $("#zip-input").val();
+    if (zipVal.length === 0 && userData.long === null) {
+    	//User has not typed in a zip code or chosen geolocation
+    	//Evan: add message to page
+    	$("#form-err").show('fast');
+        $("#form-err .notification").html("<span class='error'>What's your location?</span>");
+        focusError();
+    } else if ($("#zip-input").val().length > 0) {
+    	//User has typed in zip code field
+    	userData.zipCode = $("#zip-input").val().trim();
+    	zipToCoordinates(userData.zipCode);
+    }
 
-    console.log("zipcode entered = ", userData.zipCode);
-
-    // pass zip code to get lat / long coordinates
-    zipToCoordinates(userData.zipCode);
-    // console.log("coordinates = ", userData.long, userData.lat);
-
+    if (userData.long === null) {
+    		return;
+    	}    
+       
     var genreChoice = $("#movie-genre-list").find(":selected").text();
     userData.genrePref = genreChoice; 
     // change the genre entered into the number needed for the api call for movies
