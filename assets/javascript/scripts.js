@@ -217,7 +217,12 @@ function zipToCoordinates(zip) {
         method: 'GET',
         error: function() {
             //Here is where we need code to populate the error message saying zip code is invalid;
-            console.log('invalid zip code');
+        $("#form-err").show();        
+        $("#form-err .notification").append("<span class='error'>Sorry. That's not a valid zip code.</span>");
+        focusError();
+        $("#zip-input").focus(function() {
+            clearErrors();            
+        })
         },
         success: function(data) {
             console.log("zip cordinates completed");
@@ -225,7 +230,7 @@ function zipToCoordinates(zip) {
             userData.long = data.places[0].longitude;
             console.log("zipcords = ", userData.lat, userData.long);
         },
-        async: false,
+        // async: false,
     })
 }
 
@@ -282,6 +287,7 @@ $("#add-new-genre").on("click", function(event) {
         //Display error message. Error message will disappear and clear when user clicks in Add Genre box!
         $("#form-err").show('fast');
         $("#form-err .notification").append("<span class='error'>We don't think that's a genre. Try something else.</span>");
+        focusError();
         $("#movie-user-input-genre").focus(function() {
             $("#form-err").hide('fast');
             $("#form-err .notification .error").remove();
@@ -306,9 +312,9 @@ $("#add-new-food-type").on("click", function(event) {
     } else {
         $("#form-err").show('fast');
         $("#form-err .notification").append("<span class='error'>We doubt that's a type of food. Try something else?</span>");
+        focusError();
         $("#food-type-user-input").focus(function() {
-            $("#form-err").hide('fast');
-            $("#form-err .notification .error").remove();
+            clearErrors();
         })
     }
 
@@ -448,30 +454,45 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
 
 });
 
-
-
+//---------------------------------------------------------------------
+// Convert zip to coordinates when the user clicks out of zip code.
+//
+//---------------------------------------------------------------------
+$("#zip-input").focusout(function(){
+      userData.zipCode = $("#zip-input").val().trim();
+      zipToCoordinates(userData.zipCode);	
+})
 
 // ---------------------------------------------------------------------------------------------------------------
 // Event Handler for Submit Button Click in User Input form area
 // arguments: event
 // returns: nothing
 // ---------------------------------------------------------------------------------------------------------------
+
+function clearErrors () {
+	 $("#form-err").hide('fast');
+     $("#form-err .notification .error").remove();
+}
+
+function focusError () {
+	$('html, body').animate({
+        scrollTop: $("#form-err").offset().top
+    }, 300);
+}
+
+$('select').focus(function(){
+	clearErrors();
+})
+
 $("#submit").on("click", function(e) {
+	clearErrors();
 
     // prevents the page from reloading when the submit button is clicked (default is to reload page)
     // another way would be to use type="button" in the html page instead of type="submit"
     e.preventDefault();
 
     console.log("submit button clicked");
-
-    userData.zipCode = $("#zip-input").val().trim();
-
-    console.log("zipcode entered = ", userData.zipCode);
-
-    // pass zip code to get lat / long coordinates
-    zipToCoordinates(userData.zipCode);
-    // console.log("coordinates = ", userData.long, userData.lat);
-
+       
     var genreChoice = $("#movie-genre-list").find(":selected").text();
 
     // change the genre entered into the number needed for the api call for movies
