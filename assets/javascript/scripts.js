@@ -147,7 +147,7 @@ function dinnerQuery(cuisine, long, lat) {
     var apikey = '5102e337643a0e5250051310c79d40d6';
     var base = 'https://developers.zomato.com/api/v2.1';
     var endpoint = '/search?';
-    var url = base + endpoint + 'q=' + cuisine + '&lat=' + lat + '&long=' + long + '&apikey=' + apikey;
+    var url = base + endpoint + 'q=' + cuisine + '&lat=' + lat + '&lon=' + long + '&apikey=' + apikey;
 
     console.log("url dinner = ", url);
 
@@ -218,7 +218,7 @@ function zipToCoordinates(zip) {
         error: function() {
             //Here is where we need code to populate the error message saying zip code is invalid;
         $("#form-err").show();        
-        $("#form-err .notification").append("<span class='error'>Sorry. That's not a valid zip code.</span>");
+        $("#form-err .notification").html("<span class='error'>Sorry. That's not a valid zip code.</span>");
         focusError();
         $("#zip-input").focus(function() {
             clearErrors();            
@@ -230,12 +230,13 @@ function zipToCoordinates(zip) {
             userData.long = data.places[0].longitude;
             console.log("zipcords = ", userData.lat, userData.long);
         },
-        // async: false,
+        async: false,
     })
 }
 
 //Handle click of geolocation button; disable zip code field if successful
 $("#geo-input").on("click", function() {
+	clearErrors();
     event.preventDefault();
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -286,7 +287,7 @@ $("#add-new-genre").on("click", function(event) {
     } else {
         //Display error message. Error message will disappear and clear when user clicks in Add Genre box!
         $("#form-err").show('fast');
-        $("#form-err .notification").append("<span class='error'>We don't think that's a genre. Try something else.</span>");
+        $("#form-err .notification").html("<span class='error'>We don't think that's a genre. Try something else.</span>");
         focusError();
         $("#movie-user-input-genre").focus(function() {
             $("#form-err").hide('fast');
@@ -311,7 +312,7 @@ $("#add-new-food-type").on("click", function(event) {
         
     } else {
         $("#form-err").show('fast');
-        $("#form-err .notification").append("<span class='error'>We doubt that's a type of food. Try something else?</span>");
+        $("#form-err .notification").html("<span class='error'>We doubt that's a type of food. Try something else?</span>");
         focusError();
         $("#food-type-user-input").focus(function() {
             clearErrors();
@@ -454,35 +455,47 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
 
 });
 
-//---------------------------------------------------------------------
-// Convert zip to coordinates when the user clicks out of zip code.
-//
-//---------------------------------------------------------------------
-$("#zip-input").focusout(function(){
-      userData.zipCode = $("#zip-input").val().trim();
-      zipToCoordinates(userData.zipCode);	
+//Clear out error message above form. Used in various places.
+function clearErrors () {
+	 $("#form-err").hide('fast');
+     $("#form-err .notification .error").remove();
+}
+
+//Scroll up to error message if it's out of view.
+function focusError () {
+	if (scrollValue > 170) {
+
+	$('html, body').animate({
+        scrollTop: $("#form-err").offset().top
+    }, 300);
+	}
+}
+
+//used in focusError function.
+var scrollValue;
+$(window).scroll(function (event) {
+    scrollValue = $(window).scrollTop();
+});
+
+$('select').focus(function(){
+	clearErrors();
 })
+
+//reset form, clear out location data, and reset geolocation button
+$(":reset").on("click", function(){
+	clearErrors();
+	userData.long = null;
+	userData.lat = null;
+	userData.zipCode = null;
+	$("#zip-input").prop("disabled", false);
+	$("#geo-input").text("Get my current location");
+});
 
 // ---------------------------------------------------------------------------------------------------------------
 // Event Handler for Submit Button Click in User Input form area
 // arguments: event
 // returns: nothing
 // ---------------------------------------------------------------------------------------------------------------
-
-function clearErrors () {
-	 $("#form-err").hide('fast');
-     $("#form-err .notification .error").remove();
-}
-
-function focusError () {
-	$('html, body').animate({
-        scrollTop: $("#form-err").offset().top
-    }, 300);
-}
-
-$('select').focus(function(){
-	clearErrors();
-})
 
 $("#submit").on("click", function(e) {
 	clearErrors();
@@ -492,6 +505,24 @@ $("#submit").on("click", function(e) {
     e.preventDefault();
 
     console.log("submit button clicked");
+
+    //Validate zip code if user has typed one in, and if valid convert to lat long
+    var zipVal = $("#zip-input").val();
+    if (zipVal.length === 0 && userData.long === null) {
+    	//User has not typed in a zip code or chosen geolocation
+    	//Evan: add message to page
+    	$("#form-err").show('fast');
+        $("#form-err .notification").html("<span class='error'>What's your location?</span>");
+        focusError();
+    } else if ($("#zip-input").val().length > 0) {
+    	//User has typed in zip code field
+    	userData.zipCode = $("#zip-input").val().trim();
+    	zipToCoordinates(userData.zipCode);
+    }
+
+    if (userData.long === null) {
+    		return;
+    	}    
        
     var genreChoice = $("#movie-genre-list").find(":selected").text();
 
