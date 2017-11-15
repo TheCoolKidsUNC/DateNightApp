@@ -17,61 +17,61 @@ var validationData = {
     cuisines: ["african", "american", "amish", "argentine", "armenian", "asian", "bbq", "bagels", "bakery", "bar food", "belgian", "beverages", "brazilian", "breakfast", "british", "burger", "cafe", "cajun", "california", "cantonese", "caribbean", "chinese", "coffee and tea", "colombian", "cuban", "deli", "desserts", "dim sum", "diner", "donuts", "drinks only", "eastern european", "ethiopian", "european", "fast food", "filipino", "fish and chips", "french", "frozen yogurt", "fusion", "german", "greek", "healthy food", "ice cream", "indian", "international", "irish", "italian", "jamaican", "japanese", "kebab", "korean", "latin american", "lebanese", "mediterranean", "mexican", "middle eastern", "mongolian", "moroccan", "nepalese", "pakistani", "peruvian", "pizza", "pub food", "ramen", "salad", "sandwich", "seafood", "soul food", "south american", "south indian", "southern", "southwestern", "spanish", "steak", "sushi", "taco", "tapas", "tea", "teriyaki", "tex-mex", "thai", "turkish", "vegetarian", "venezuelan", "vietnamese"],
     genres: [{
         "id": 28,
-        "name": "action"
+        "name": "Action"
     }, {
         "id": 12,
-        "name": "adventure"
+        "name": "Adventure"
     }, {
         "id": 16,
-        "name": "animation"
+        "name": "Animation"
     }, {
         "id": 35,
-        "name": "comedy"
+        "name": "Comedy"
     }, {
         "id": 80,
-        "name": "crime"
+        "name": "Crime"
     }, {
         "id": 99,
-        "name": "documentary"
+        "name": "Documentary"
     }, {
         "id": 18,
-        "name": "drama"
+        "name": "Drama"
     }, {
         "id": 10751,
-        "name": "family"
+        "name": "Family"
     }, {
         "id": 14,
-        "name": "fantasy"
+        "name": "Fantasy"
     }, {
         "id": 36,
-        "name": "history"
+        "name": "History"
     }, {
         "id": 27,
-        "name": "horror"
+        "name": "Horror"
     }, {
         "id": 10402,
-        "name": "music"
+        "name": "Music"
     }, {
         "id": 9648,
-        "name": "mystery"
+        "name": "Mystery"
     }, {
         "id": 10749,
-        "name": "romance"
+        "name": "Romance"
     }, {
         "id": 878,
-        "name": "science fiction"
+        "name": "Science fiction"
     }, {
         "id": 10770,
-        "name": "tv movie"
+        "name": "TV movie"
     }, {
         "id": 53,
-        "name": "thriller"
+        "name": "Thriller"
     }, {
         "id": 10752,
-        "name": "war"
+        "name": "War"
     }, {
         "id": 37,
-        "name": "western"
+        "name": "Western"
     }]
 }
 
@@ -162,51 +162,46 @@ function dinnerQuery(cuisine, long, lat) {
     })
 }
 
-// use this for new movie search -----   https://api.themoviedb.org/3/movie/now_playing?api_key=d928a0b7d0a845298ec26a9121d6724f&language=en-US&page=1&region=US
-// '/discover/movie?';
-// note the movies pull from TV series movies too. Also the date range function isn't live updates
+
 // var movieQuery = function(genre) {
-function movieQuery(genre) {
-    var apikey = 'd928a0b7d0a845298ec26a9121d6724f';
-    var base = 'https://api.themoviedb.org/3';
-    var endpoint = '/movie/now_playing?';
-    var theater = ' &with_release_type=3';
-    var releaseDate = '&primary_release_date.gte=2017-10-10&primary_release_date.lte=2017-10-30';
-    var region = '&region=US';
+function movieQuery(genre, long, lat) {
+    var apikey = '23n96frwcyfg7jnss9h8ax4';
+    var base = 'http://data.tmsapi.com/v1.1';
+    var endpoint = '/movies/showings?';
+    var startDate = '2017-11-15';
+    // var theater = ' &with_release_type=3';
+    // var releaseDate = '&primary_release_date.gte=2017-10-10&primary_release_date.lte=2017-10-30';
+    // var region = '&region=US';
     // var url = base + endpoint + 'with_genres=' + genre + '&apikey=' + apikey;
-    var url = base + endpoint + 'api_key=' + apikey + '&language=en-US&sort_by=popularity.desc&page=1&with_genres=' + genre + region;
+    // http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-15&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=x23n96frwcyfg7jnss9h8ax4
+    // var url = base + endpoint + 'startDate=' + startDate + '&lat=' + lat + '&lng=' + long + '&radius=15&units=mi&imageSize=Md&imageText=true&'+ 'api_key=' + apikey;
+    var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-15&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=x23n96frwcyfg7jnss9h8ax4';
     $.ajax({
         crossDomain: true,
         url: url,
         method: 'GET'
     }).done(function(data) {
+    	var filteredMovies = [];
+    	for (var i = 0; i < data.length-1; i++) {
+    		 var genres = data[i].genres;
+       		 var check;
+       		 if (genres){
+       		 check = genres.includes(userData.genrePref);
+       		}
+       		 if (check === true) {
+    		 	filteredMovies.push(data[i]);
+       		 }
 
-        userData.movieOptions = randomizeArray(data.results, 3);
+    	}
+    	
+        userData.movieOptions = randomizeArray(filteredMovies, 3);
+
         console.log(userData.movieOptions);
         putMovieAPIDataIntoTableDiv();
     });
 }
 
-// this part is what gets the ID number for the genre because the API assigns a ID number to each name
-// var genreNumber = function (name) {
-// 	for (var i = 0; i < validationData.genres.length; i++) {
-// 		// validationData.genres[i]
-// 		if (validationData.genres[i].name == name){
-// 			userData.genrePref = validationData.genres[i].id;
-// 			console.log(userData.genrePref);
-// 		}
-// 	}
-// }
-// genreNumber("crime");  FOR testing of calls
-// These calls are for testing purposes
-// They need to be triggered by the submit button eventually
-// dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
-// movieQuery(userData.genrePref);
 
-// $("#zip-input").on("click", function() {
-//     var zip = $("#zip-input").val().trim();
-//     console.log(zip);
-// });
 
 //Use function to validate zip code, and, if valid, convert to lat and long.
 // var zipToCoordinates = function(zip) {    
@@ -457,9 +452,9 @@ $("#submit").on("click", function(e) {
     // console.log("coordinates = ", userData.long, userData.lat);
 
     var genreChoice = $("#movie-genre-list").find(":selected").text();
-
+    userData.genrePref = genreChoice; 
     // change the genre entered into the number needed for the api call for movies
-    getGenreNumber(genreChoice.toLowerCase());
+    // getGenreNumber(genreChoice.toLowerCase());
 
     // console.log("genre# = ", userData.genrePref);
 
@@ -468,7 +463,7 @@ $("#submit").on("click", function(e) {
     console.log("cuisine selected = ", userData.cuisinePref);
 
     dinnerQuery(userData.cuisinePref, userData.long, userData.lat);
-    movieQuery(userData.genrePref);
+    movieQuery(userData.genrePref, userData.long, userData.lat);
 
 });
 
