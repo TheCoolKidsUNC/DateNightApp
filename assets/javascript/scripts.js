@@ -217,11 +217,11 @@ function zipToCoordinates(zip) {
         method: 'GET',
         error: function() {
             //Here is where we need code to populate the error message saying zip code is invalid;
-        $("#form-err").show('fast');
+        $("#form-err").show();        
         $("#form-err .notification").append("<span class='error'>Sorry. That's not a valid zip code.</span>");
+        focusError();
         $("#zip-input").focus(function() {
-            $("#form-err").hide('fast');
-            $("#form-err .notification .error").remove();
+            clearErrors();            
         })
         },
         success: function(data) {
@@ -230,7 +230,7 @@ function zipToCoordinates(zip) {
             userData.long = data.places[0].longitude;
             console.log("zipcords = ", userData.lat, userData.long);
         },
-        async: false,
+        // async: false,
     })
 }
 
@@ -285,6 +285,7 @@ $("#add-new-genre").on("click", function(event) {
         //Display error message. Error message will disappear and clear when user clicks in Add Genre box!
         $("#form-err").show('fast');
         $("#form-err .notification").append("<span class='error'>We don't think that's a genre. Try something else.</span>");
+        focusError();
         $("#movie-user-input-genre").focus(function() {
             $("#form-err").hide('fast');
             $("#form-err .notification .error").remove();
@@ -307,9 +308,9 @@ $("#add-new-food-type").on("click", function(event) {
     } else {
         $("#form-err").show('fast');
         $("#form-err .notification").append("<span class='error'>We doubt that's a type of food. Try something else?</span>");
+        focusError();
         $("#food-type-user-input").focus(function() {
-            $("#form-err").hide('fast');
-            $("#form-err .notification .error").remove();
+            clearErrors();
         })
     }
 
@@ -457,7 +458,24 @@ $("#zip-input").focusout(function(){
 // arguments: event
 // returns: nothing
 // ---------------------------------------------------------------------------------------------------------------
+
+function clearErrors () {
+	 $("#form-err").hide('fast');
+     $("#form-err .notification .error").remove();
+}
+
+function focusError () {
+	$('html, body').animate({
+        scrollTop: $("#form-err").offset().top
+    }, 300);
+}
+
+$('select').focus(function(){
+	clearErrors();
+})
+
 $("#submit").on("click", function(e) {
+	clearErrors();
 
     // prevents the page from reloading when the submit button is clicked (default is to reload page)
     // another way would be to use type="button" in the html page instead of type="submit"
