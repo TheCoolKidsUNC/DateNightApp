@@ -285,6 +285,11 @@ $("#add-new-genre").on("click", function(event) {
             $("#form-err .notification .error").remove();
         })
     }
+
+    $("#movie-user-input-genre").val("");
+
+
+
 });
 
 $("#add-new-food-type").on("click", function(event) {
@@ -303,6 +308,7 @@ $("#add-new-food-type").on("click", function(event) {
         })
     }
 
+    $("#food-type-user-input").val("");
 
 });
 
