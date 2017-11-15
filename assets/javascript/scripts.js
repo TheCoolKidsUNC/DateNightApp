@@ -275,7 +275,9 @@ $("#add-new-genre").on("click", function(event) {
 
     if (genreIsValid) {
         //Add choice to the dropdown list
-        $("#movie-genre-list > select").append("<option>" + userGenre + "</option>");
+        $("#movie-genre-list > select").prepend("<option>" + userGenre + "</option>");
+        $("#movie-genre-list > select > option:eq(0)").attr('selected', true);
+
     } else {
         //Display error message. Error message will disappear and clear when user clicks in Add Genre box!
         $("#form-err").show('fast');
@@ -285,6 +287,11 @@ $("#add-new-genre").on("click", function(event) {
             $("#form-err .notification .error").remove();
         })
     }
+
+    $("#movie-user-input-genre").val("");
+
+
+
 });
 
 $("#add-new-food-type").on("click", function(event) {
@@ -293,7 +300,9 @@ $("#add-new-food-type").on("click", function(event) {
     // This line grabs the input from the textbox
     var userFood = $("#food-type-user-input").val().trim().toLowerCase();
     if (validationData.cuisines.includes(userFood)) {
-        $("#resturant-type-list > select").append("<option>" + userFood + "</option>");
+        $("#resturant-type-list > select").prepend("<option>" + userFood + "</option>");
+        $("#resturant-type-list > select > option:eq(0)").attr('selected', true);
+        
     } else {
         $("#form-err").show('fast');
         $("#form-err .notification").append("<span class='error'>We doubt that's a type of food. Try something else?</span>");
@@ -303,6 +312,7 @@ $("#add-new-food-type").on("click", function(event) {
         })
     }
 
+    $("#food-type-user-input").val("");
 
 });
 
@@ -315,6 +325,9 @@ $("#add-new-food-type").on("click", function(event) {
 $("#movie-choices-list").on("click", "tbody > tr", function(e) {
 
     console.log("movie-choices-list table row clicked");
+
+    // remove all "is-selected" classes from the table rows
+    $(".is-selected").removeClass("is-selected");
 
     // add is selected class to the choice made
     $(this).addClass("is-selected");
@@ -374,6 +387,9 @@ $("#movie-choices-list").on("click", "tbody > tr", function(e) {
 $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
 
     console.log("restaurant-choices-list table row clicked");
+
+    // remove all "is-selected" classes from the table rows
+    $(".is-selected").removeClass("is-selected");
 
     // add is selected class to the choice made
     $(this).addClass("is-selected");
