@@ -426,17 +426,18 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
     restPhotoImg.attr("alt", restName);
     restPhotoImg.addClass("center-img-element");
 
-    // create link to google maps for address of restaurant
+    // create link to google for address of restaurant
     var restAddressLink = $("<a>");
-    restAddressLink.attr("href", "#");
+    restAddressLink.attr("href", "https://www.google.com/search?q=" + restName + " " + restAddressText);
     restAddressLink.attr("alt", restName);
     restAddressLink.attr("target", "_blank");
     restAddressLink.addClass("bold-text");
     restAddressLink.text(restAddressText);
 
-    // create link to restaurant menu
+    // create link to restaurant menu on google
     var restMenuLink = $("<a>");
-    restMenuLink.attr("href", restMenuSrc);
+    // restMenuLink.attr("href", restMenuSrc); // menu link from api data
+    restMenuLink.attr("href", "https://www.google.com/search?q=" + restName + " menu");
     restMenuLink.attr("alt", restName);
     restMenuLink.attr("target", "_blank");
     restMenuLink.addClass("bold-text");
