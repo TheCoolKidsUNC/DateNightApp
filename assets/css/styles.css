@@ -49,13 +49,6 @@ h1 {
 	background-color: #F5F5F5;
 }
 
-.hero-body, {
-	border-style: ridge;
-	border-color: #FAEBD7;
-	border: 2px solid #F0F8FF;
-    border-radius: 8px;
-}
-
 .card-content {
 	text-align: center;
 	font-family: 'Poppins', sans-serif;
