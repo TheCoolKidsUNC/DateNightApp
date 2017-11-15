@@ -326,6 +326,9 @@ $("#movie-choices-list").on("click", "tbody > tr", function(e) {
 
     console.log("movie-choices-list table row clicked");
 
+    // remove all "is-selected" classes from the table rows
+    $(".is-selected").removeClass("is-selected");
+
     // add is selected class to the choice made
     $(this).addClass("is-selected");
 
@@ -384,6 +387,9 @@ $("#movie-choices-list").on("click", "tbody > tr", function(e) {
 $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
 
     console.log("restaurant-choices-list table row clicked");
+
+    // remove all "is-selected" classes from the table rows
+    $(".is-selected").removeClass("is-selected");
 
     // add is selected class to the choice made
     $(this).addClass("is-selected");
