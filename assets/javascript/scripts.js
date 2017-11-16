@@ -159,6 +159,7 @@ function dinnerQuery(cuisine, long, lat) {
         console.log(data);
         userData.dinnerOptions = randomizeArray(data.restaurants, 3);
         putRestaurantAPIDataIntoTableDiv();
+        scrollToResults();
     })
 }
 
@@ -198,6 +199,8 @@ function movieQuery(genre, long, lat) {
 
         console.log(userData.movieOptions);
         putMovieAPIDataIntoTableDiv();
+        scrollToResults();
+
     });
 }
 
@@ -206,7 +209,7 @@ function movieQuery(genre, long, lat) {
 //Use function to validate zip code, and, if valid, convert to lat and long.
 // var zipToCoordinates = function(zip) {    
 function zipToCoordinates(zip) {
-    var url = 'http://api.zippopotam.us/us/' + zip;
+    var url = 'https://api.zippopotam.us/us/' + zip;
     $.ajax({
         url: url,
         method: 'GET',
@@ -516,6 +519,7 @@ $("#submit").on("click", function(e) {
     	zipToCoordinates(userData.zipCode);
     }
 
+    //Stop code if user doesn't have a location
     if (userData.long === null) {
     		return;
     	}    
@@ -536,6 +540,19 @@ $("#submit").on("click", function(e) {
 
 });
 
+//------------------------------------------------------------------------
+// Scroll down to the results area if form submision is successful.
+// Included in done method of both AJAX calls.
+//------------------------------------------------------------------------
+
+function scrollToResults () {
+	if (userData.dinnerOptions.length > 0 && userData.movieOptions.length > 0) {
+		$('html, body').animate({
+        	scrollTop: $("#results-area").offset().top
+    	}, 300);
+
+	}		
+}
 
 // ---------------------------------------------------------------------------------------------------------------
 // Get the string entered by the user and turn it into the corresponding # to use in the movie API call
