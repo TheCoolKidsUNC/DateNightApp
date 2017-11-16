@@ -158,7 +158,17 @@ function dinnerQuery(cuisine, long, lat) {
 
         console.log(data);
         userData.dinnerOptions = randomizeArray(data.restaurants, 3);
-        putRestaurantAPIDataIntoTableDiv();
+
+        // check to see if no results returned from API
+        if (userData.dinnerOptions.length === 0) {
+
+            $("#restaurant-list-err").show();        
+            $("#restaurant-list-err .notification").html("<span class='error'>We couldn't find any places to eat for you try another cuisine or location.</span>");
+            focusError();
+
+        } else {
+            putRestaurantAPIDataIntoTableDiv();
+        }
     })
 }
 
@@ -197,10 +207,19 @@ function movieQuery(genre, long, lat) {
         userData.movieOptions = randomizeArray(filteredMovies, 3);
 
         console.log(userData.movieOptions);
-        putMovieAPIDataIntoTableDiv();
+
+        // check to see if no results returned from API
+        if (userData.movieOptions.length === 0) {
+
+            $("#movie-list-err").show();        
+            $("#movie-list-err .notification").html("<span class='error'>We couldn't find any movies for you try another genre or location.</span>");
+            focusError();
+
+        } else {
+            putMovieAPIDataIntoTableDiv();
+        }
     });
 }
-
 
 
 //Use function to validate zip code, and, if valid, convert to lat and long.
@@ -457,6 +476,28 @@ function clearErrors () {
      $("#form-err .notification .error").remove();
 }
 
+// Clear out error messages above choice table lists
+function clearTableListErrors (id) {
+
+    console.log("table list errors cleared now");
+    $(id).hide("fast");
+    $(id + " .error").remove();
+}
+
+// When form div has focus again clear error messages
+$("#movie-select-list").focus( function() {
+
+    console.log("form focus here");
+    clearTableListErrors("#movie-list-err");
+});
+
+// When form div has focus again clear error messages
+$("#resturant-select-list").focus( function() {
+
+    console.log("form focus here");
+    clearTableListErrors("#restaurant-list-err");
+});
+
 //Scroll up to error message if it's out of view.
 function focusError () {
 	if (scrollValue > 170) {
@@ -495,7 +536,7 @@ $(":reset").on("click", function(){
 
 $("#submit").on("click", function(e) {
 	clearErrors();
-
+    
     // prevents the page from reloading when the submit button is clicked (default is to reload page)
     // another way would be to use type="button" in the html page instead of type="submit"
     e.preventDefault();
