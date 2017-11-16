@@ -674,7 +674,14 @@ function putRestaurantAPIDataIntoTableDiv() {
         restLocation = userData.dinnerOptions[i].restaurant.location.address;
         restRating = userData.dinnerOptions[i].restaurant.user_rating.aggregate_rating;
 
-        var newRestaurantRow = createTableRowRestaurant(i, restName, restPrice, restLocation, restRating);
+        //convert restPrice to dollar signs
+        console.log("price is "+restPrice);
+        var restPriceSigns = "";
+        for (var i = 0; i < restPrice; i++) {
+            restPriceSigns += "$";
+        }
+
+        var newRestaurantRow = createTableRowRestaurant(i, restName, restPriceSigns, restLocation, restRating);
 
         $("#restaurant-choices-list > tbody").append(newRestaurantRow);
     }
