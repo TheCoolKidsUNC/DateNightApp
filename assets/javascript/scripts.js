@@ -343,6 +343,23 @@ $("#add-new-food-type").on("click", function(event) {
 
 });
 
+// ------------------------------------------------------------
+// Scrolls to date details after user selects something from each table
+// Used in both click handlers
+//---------------------------------------------------------------
+
+function scrollToDetails () {
+    console.log('scroll to details logs...')
+    console.log(userData.dinnerDecision);
+    console.log(userData.movieDecision);
+    if (userData.dinnerDecision && userData.movieDecision) {
+         console.log('scroll to details fired');
+        $('html, body').animate({
+            scrollTop: $("#date-details").offset().top
+        }, 300);
+    }
+}
+
 
 // ---------------------------------------------------------------------------------------------------------------
 // Event Handler for Movie Choices Table Row Click
@@ -366,6 +383,7 @@ $("#movie-choices-list").on("click", "tbody > tr", function(e) {
     userData.movieDecision = userData.movieOptions[movieChoiceItem];
 
     console.log("final choice info ", userData.movieDecision);
+    scrollToDetails();
 
     // empty the table to start clean if other options have been picked previously
     $("#final-movie-details").empty();
@@ -415,6 +433,7 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
 
     console.log("restaurant-choices-list table row clicked");
 
+
     // remove all "is-selected" classes from the table rows
     $("#restaurant-choices-list .is-selected").removeClass("is-selected");
 
@@ -428,6 +447,7 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
     userData.dinnerDecision = userData.dinnerOptions[restChoiceItem];
 
     console.log("final choice info ", userData.dinnerDecision);
+    scrollToDetails();
 
     // empty the table to start clean if other options have been picked previously
     $("#final-restaurant-details").empty();
@@ -665,6 +685,8 @@ function putRestaurantAPIDataIntoTableDiv() {
 
     $("#restaurant-choices-list > tbody").empty();
 
+    console.log(userData.dinnerOptions);
+   
     for (var i = 0; i < userData.dinnerOptions.length; i++) {
 
         console.log(userData.dinnerOptions[i]);
@@ -677,8 +699,10 @@ function putRestaurantAPIDataIntoTableDiv() {
         //convert restPrice to dollar signs
         console.log("price is "+restPrice);
         var restPriceSigns = "";
+        if (restPrice > 0) {
         for (var i = 0; i < restPrice; i++) {
             restPriceSigns += "$";
+            }
         }
 
         var newRestaurantRow = createTableRowRestaurant(i, restName, restPriceSigns, restLocation, restRating);
