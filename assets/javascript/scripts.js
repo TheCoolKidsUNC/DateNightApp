@@ -171,19 +171,25 @@ function movieQuery(genre, long, lat) {
     var apikey = 'xmmfbjcyadjpghdjbuh56he7';
     var base = 'http://data.tmsapi.com/v1.1';
     var endpoint = '/movies/showings?';
-    var startDate = '2017-11-15';
+    var startDate = '2017-11-19';
     // var theater = ' &with_release_type=3';
     // var releaseDate = '&primary_release_date.gte=2017-10-10&primary_release_date.lte=2017-10-30';
     // var region = '&region=US';
     // var url = base + endpoint + 'with_genres=' + genre + '&apikey=' + apikey;
-    // http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-15&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=x23n96frwcyfg7jnss9h8ax4
-    // var url = base + endpoint + 'startDate=' + startDate + '&lat=' + lat + '&lng=' + long + '&radius=15&units=mi&imageSize=Md&imageText=true&'+ 'api_key=' + apikey;
-    var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-15&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=x23n96frwcyfg7jnss9h8ax4';
+    // http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-15&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=xmmfbjcyadjpghdjbuh56he7
+    var url = base + endpoint + 'startDate=' + startDate + '&zip=27605' + '&api_key=' + apikey;
+    // var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-17&zip=78701&api_key=xmmfbjcyadjpghdjbuh56he7';
     $.ajax({
         crossDomain: true,
         url: url,
-        method: 'GET'
+        method: 'GET', 
+        error: function(a,b) {
+        	console.log(a);
+        	console.log(b);
+        	console.log('error');
+        }
     }).done(function(data) {
+    	
     	var filteredMovies = [];
     	for (var i = 0; i < data.length-1; i++) {
     		 var genres = data[i].genres;
@@ -194,7 +200,7 @@ function movieQuery(genre, long, lat) {
        		 if (check === true) {
     		 	filteredMovies.push(data[i]);
        		 }
-
+       		 
     	}
     	
         userData.movieOptions = randomizeArray(filteredMovies, 3);
@@ -628,7 +634,7 @@ function getGenreNumber(genreString) {
 function getCuisineNumber(cuisineString) {
     var validationArray = validationData.cuisines.cuisines;
     for (var i = 0; i < validationArray.length; i++) {
-        console.log(validationArray[i].cuisine.cuisine_name.toLowerCase());
+        
         if (validationArray[i].cuisine.cuisine_name.toLowerCase() === cuisineString) {
             userData.cuisinePref = validationArray[i].cuisine.cuisine_id;
         }
