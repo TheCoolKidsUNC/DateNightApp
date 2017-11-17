@@ -856,8 +856,13 @@ function putMovieAPIDataIntoTableDiv() {
         console.log("movTimesArray table data load")
         console.log(movTimesArray);
 
-        // var newMovieRow = createTableRowMovie(i, movName, movTimes, movLocation, movRating);
+        // if (movTimesArray.constructor === Array) {
+            // var newMovieRow = createTableRowMovie(i, movName, movTimes, movLocation, movRating);
         var newMovieRow = createTableRowMovie2(i, movName, movTimesArray, movRating);
+        // } else {
+
+            // var newMovieRow = createTableRowMovie2(i, movName, movTimes, movLocation, movRating);
+        // }
 
         $("#movie-choices-list > tbody").append(newMovieRow);
     }
@@ -962,21 +967,30 @@ function createTableRowMovie2(id, name, timesArray, rating) {
     var timesHTMLList = "<ul>";
     var locationHTMLList = "<ul>";
 
-    for (var i = 0; i < timesArray.length; i++) {
+    if (timesArray.constructor === Array) {
+
+        for (var i = 0; i < timesArray.length; i++) {
+            
+            var timeGrab = timesArray[i].theatreTimes;
+            var nameGrab = timesArray[i].theatreName;
+
+            var timeGrabList = timeGrab.join(", ");
+
+            timesHTMLList += "<li>" + timeGrabList + "</li>";
+            locationHTMLList += "<li>" + nameGrab + "</li>";
         
-        var timeGrab = timesArray[i].theatreTimes;
-        var nameGrab = timesArray[i].theatreName;
+        }
 
-        var timeGrabList = timeGrab.join(", ");
+    } else {
 
-        timesHTMLList += "<li>" + timeGrabList + "</li>";
-        locationHTMLList += "<li>" + nameGrab + "</li>";
-    
+        // no times available so return no available movie times / locations
+        timesHTMLList += "<li>No available showtimes</li>";
+        locationHTMLList += "<li>No available theatres</li>";
     }
+
 
     timesHTMLList += "</ul>";
     locationHTMLList += "</ul>";
-
 
     // use ` instead of ' or " to be able to add the variable names into the string and it interpret them for the values passed in
     return `
