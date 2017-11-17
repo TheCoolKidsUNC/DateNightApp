@@ -967,6 +967,8 @@ function createTableRowMovie2(id, name, timesArray, rating) {
         var timeGrab = timesArray[i].theatreTimes;
         var nameGrab = timesArray[i].theatreName;
 
+        var timeGrabList = timeGrab.join(", ");
+
         timesHTMLList += "<li>" + timeGrabList + "</li>";
         locationHTMLList += "<li>" + nameGrab + "</li>";
     
