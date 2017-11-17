@@ -24,13 +24,13 @@ var validationData = {
         "name": "Adventure"
     }, {
         "id": 16,
-        "name": "Animation"
+        "name": "Animated"
     }, {
         "id": 35,
         "name": "Comedy"
     }, {
         "id": 80,
-        "name": "Crime"
+        "name": "Crime drama"
     }, {
         "id": 99,
         "name": "Documentary"
@@ -42,13 +42,10 @@ var validationData = {
         "name": "Fantasy"
     }, {
         "id": 36,
-        "name": "History"
+        "name": "Historical drama"
     }, {
         "id": 27,
         "name": "Horror"
-    }, {
-        "id": 10402,
-        "name": "Music"
     }, {
         "id": 9648,
         "name": "Mystery"
@@ -58,19 +55,10 @@ var validationData = {
     }, {
         "id": 878,
         "name": "Science fiction"
-    }, {
-        "id": 10770,
-        "name": "TV movie"
-    }, {
+    }, {        
         "id": 53,
         "name": "Thriller"
-    }, {
-        "id": 10752,
-        "name": "War"
-    }, {
-        "id": 37,
-        "name": "Western"
-    }]
+    }]  
 }
 
 validationData.cuisines.cuisines.forEach(function(item) {
