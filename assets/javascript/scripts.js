@@ -131,7 +131,7 @@ function randomizeArray(array, num) {
 
 }
 
-//get data from Zomato
+//get data from Zomato      
 // var dinnerQuery = function(cuisine, long, lat) {
 function dinnerQuery(cuisine, long, lat) {
     var apikey = '5102e337643a0e5250051310c79d40d6';
@@ -165,10 +165,10 @@ function dinnerQuery(cuisine, long, lat) {
     })
 }
 
-
+// here is one API key since we run out at 50 calls. ---- 23n96frwcyfg7jnss9h8ax4
 // var movieQuery = function(genre) {
 function movieQuery(genre, long, lat) {
-    var apikey = '23n96frwcyfg7jnss9h8ax4';
+    var apikey = 'xmmfbjcyadjpghdjbuh56he7';
     var base = 'http://data.tmsapi.com/v1.1';
     var endpoint = '/movies/showings?';
     var startDate = '2017-11-15';
