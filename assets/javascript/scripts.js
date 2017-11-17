@@ -268,7 +268,7 @@ $("#geo-input").on("click", function() {
             userData.lat = position.coords.latitude;
             userData.long = position.coords.longitude;
             $("#zip-input").prop("disabled", true);
-            $("#geo-input").text("Got your coordinates!");
+            $("#geo-input").text("Got Your Coordinates!");
         })
     }
 });
