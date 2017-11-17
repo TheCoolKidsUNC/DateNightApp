@@ -704,7 +704,7 @@ function putRestaurantAPIDataIntoTableDiv() {
         //convert restPrice to dollar signs
         var restPriceSigns = "";
         if (restPrice > 0) {
-        for (var i = 0; i < restPrice; i++) {
+        for (var x = 0; x < restPrice; x++) {
             restPriceSigns += "$";
             }
         }
