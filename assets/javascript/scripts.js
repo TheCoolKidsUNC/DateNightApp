@@ -293,7 +293,7 @@ $("#add-new-genre").on("click", function(event) {
     //Check to see if user typed genre exists in validation array.
     var genreIsValid = false;
     validationData.genres.forEach(function(item) {
-        if (item.name === userGenre) {
+        if (item.name.toLowerCase() === userGenre) {
             genreIsValid = true;
         }
     })
