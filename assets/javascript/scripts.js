@@ -178,7 +178,9 @@ function dinnerQuery(cuisine, long, lat) {
 
 // var movieQuery = function(genre) {
 function movieQuery(genre, long, lat) {
-    var apikey = '23n96frwcyfg7jnss9h8ax4';
+    // var apikey = '23n96frwcyfg7jnss9h8ax4'; // I think this one might be wrong based off the url hardcoded below
+    // var apikey = 'x23n96frwcyfg7jnss9h8ax4';
+    var apikey = 'xmmfbjcyadjpghdjbuh56he7';
     var base = 'http://data.tmsapi.com/v1.1';
     var endpoint = '/movies/showings?';
     var startDate = '2017-11-15';
@@ -188,7 +190,8 @@ function movieQuery(genre, long, lat) {
     // var url = base + endpoint + 'with_genres=' + genre + '&apikey=' + apikey;
     // http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-15&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=x23n96frwcyfg7jnss9h8ax4
     // var url = base + endpoint + 'startDate=' + startDate + '&lat=' + lat + '&lng=' + long + '&radius=15&units=mi&imageSize=Md&imageText=true&'+ 'api_key=' + apikey;
-    var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-15&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=x23n96frwcyfg7jnss9h8ax4';
+    // var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-15&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=x23n96frwcyfg7jnss9h8ax4';
+    var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-17&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=x23n96frwcyfg7jnss9h8ax4';
     $.ajax({
         crossDomain: true,
         url: url,
@@ -372,36 +375,99 @@ $("#movie-choices-list").on("click", "tbody > tr", function(e) {
 
     // set variables for data to be shown in final choice cards/views
     var movTitle = userData.movieDecision.title;
-    var movPosterPath = userData.movieDecision.poster_path;
-    var movDescription = userData.movieDecision.overview;
-    var movReleased = userData.movieDecision.release_date;
-    var movTimes = "See Movie Times";
+    var movPosterPath = userData.movieDecision.preferredImage.uri;
+    var movDescription = userData.movieDecision.shortDescription;
+    var movReleased = userData.movieDecision.releaseDate;
+
+    // need to iterate through the times / locations in the array
+    // var movTimes = "See Movie Times";
+    // var movTimes = getTimesLocationData();
+    
+    // returns back an array of location names w/ associated times
+    var movTimesArray = getTimesLocationData2(userData.movieDecision.showtimes);
+
+    console.log("adding movie times list");
+    console.log(movTimesArray);
+
+    
+    // check to see if an array of theatres/times comes back
+    // if (movTimesArray.isArray()) {
+    if (movTimesArray.constructor === Array) {
+
+        // if movie times array larger than 4 narrow it down for display / user choice
+
+        // create movTimesElements from movTimesArray
+        var locationList = $("<ul>");
+        locationList.attr("id", "loc_list");
+        
+        // loop through location names here
+        for (var i = 0; i < movTimesArray.length; i++) {
+            
+            // create html elements for listing movie theatres / details
+            var locationItem = $("<li>");
+            var locationLink = $("<a>");
+            var timesList = $("<p>");
+
+            console.log("timesList = ", timesList);
+            console.log("locationLink = ", locationLink);
+            console.log("locationItem = ", locationItem);
+            console.log("locationList = ", locationList);
+        
+            locationLink.text(movTimesArray[i].theatreName);
+            console.log("Location Link = ", locationLink.text());
+
+            // check to see if there is a link to buy tickets
+            if (movTimesArray[i].theatreLink != undefined) {
+
+                console.log("theatreLink exists");
+                locationLink.attr("href", movTimesArray[i].theatreLink);
+                locationLink.attr("target", "_blank");
+                locationLink.attr("alt", "Get Tickets Here");
+            }
+
+            // add times in array to the list w/ a , separating them
+            timesList.text(" Showtimes: " + movTimesArray[i].theatreTimes.join(", "));
+
+            // add HTML elements to the DOM / user view
+            locationList.append(locationItem);
+            locationItem.append(locationLink);
+            locationItem.append(timesList);
+
+        }   // end loop through movTimesArray
+
+        $("#final-movie-details").append(locationList);
+
+    } else {
+
+        // need to figure out what to do here if no times / locations returned
+        $("#final-movie-details").append(movTimesArray);
+
+    }
+
+
 
     // create image tag & details for poster to be added to final choice details view
-    var movPosterImg = $("<img>");
-    movPosterImg.attr("src", "https://image.tmdb.org/t/p/w185" + movPosterPath);
-    movPosterImg.addClass("center-img-element");
+    // var movPosterImg = $("<img>");
+    // // Need tmsimg api key for the image to be returned properly ... commented this out until we get higher level api key plan
+    // // movPosterImg.attr("src", "http://developer.tmsimg.com/" + movPosterPath + '?api_key=x23n96frwcyfg7jnss9h8ax4');
+    // movPosterImg.attr("src", "assets/images/date-night-finished.jpg");
+    // movPosterImg.attr("width", "40%");
+    // movPosterImg.attr("height", "40%");
+    // movPosterImg.attr("alt", movTitle);
+    // movPosterImg.addClass("center-img-element");
 
-    // create link to google movie times for local theatres
-    var movTimesSearchLink = $("<a>");
-    movTimesSearchLink.attr("href", "#");
-    movTimesSearchLink.attr("alt", movTitle);
-    movTimesSearchLink.attr("target", "_blank");
-    movTimesSearchLink.addClass("bold-text");
-    movTimesSearchLink.text(movTimes);
-
-    // console.log("poster path = ", movPosterImg.attr("src"));
 
     // add title to the card title area
     $("#movie-final-pick-title").text(movTitle);
 
     // append new details for selected movie to the final movie details card area
-    $("#final-movie-details").append(movPosterImg);
-    $("#final-movie-details").append("<p><strong>Overview: </strong></p>" + "<p>" + movDescription + "</p>");
-    $("#final-movie-details").append("<p><strong>Release Date: </strong></p>" + "<p>" + movReleased + "</p>");
-    $("#final-movie-details").append("<p><strong>");
-    $("#final-movie-details").append(movTimesSearchLink);
-    $("#final-movie-details").append("</p></strong>");
+    // $("#final-movie-details").append(movPosterImg);
+    // $("#final-movie-details").append("<p><strong>Overview: </strong><span> " + movDescription + "</span></p>");
+    // $("#final-movie-details").append("<p><strong>Release Date: </strong><span>" + movReleased + "</span></p>");
+    
+    $("#final-movie-details").prepend("<p><strong>Release Date: </strong><span>" + movReleased + "</span></p>");
+    $("#final-movie-details").prepend("<p><strong>Overview: </strong><p> " + movDescription + "</p>");
+    // $("#final-movie-details").prepend(movPosterImg);
 
 });
 
@@ -475,6 +541,114 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
     $("#final-restaurant-details").append(restMenuLink);
 
 });
+
+
+function getTimesLocationData2(timesArray) {
+    
+    // get current time to check against times from movie api
+    var currentTime = moment();
+
+    // theatre object array for checks
+    var theatreArray = [];
+    var theatreArrayCtr = 0;
+
+    // get current time to check against times from movie api
+    var currentTime = moment();
+
+    // get final choice showtimes info
+    // var timesArray = userData.movieDecision.showtimes;
+
+    console.log("get times function triggered");
+    console.log(timesArray);
+
+    for (var i = 0; i < timesArray.length; i++) {
+
+        // // should this be here or elsewhere???
+        var newTheatre = {
+            theatreName: null,
+            theatreLink: null,
+            theatreTimes: [],
+        };
+
+        var showtimeLocation = timesArray[i].theatre.name;
+        // console.log("theater = ", showtimeLocation);
+        // console.log("loop # " + i);
+
+        var grabLink = timesArray[i].ticketURI;
+
+        // console.log("grabLink = ", grabLink);
+
+        // get the time from the current api data array
+        var timeGrab = timesArray[i].dateTime.split("T").pop();
+        var movieTimeMoment = moment(timeGrab, "HH:mm");
+
+        // console.log("timeGrab = ", timeGrab);
+
+        // console.log(newTheatre);
+
+        if (movieTimeMoment.isAfter(currentTime)) {
+
+            if (theatreArray.length === 0) {
+
+                // console.log("theatre not yet added to the list");
+                newTheatre.theatreName = showtimeLocation;
+                newTheatre.theatreLink = grabLink;
+                newTheatre.theatreTimes.push(timeGrab);
+
+                theatreArray.push(newTheatre);
+
+                // console.log(newTheatre);
+                // console.log(theatreArray);
+
+            } else {
+
+                // console.log("--------");
+                // console.log(theatreArray[theatreArrayCtr].theatreName);
+                // console.log(showtimeLocation);
+
+                // check to see if the theatre name is in the theatre array already 
+                if (theatreArray[theatreArrayCtr].theatreName === showtimeLocation) {
+                
+                    // console.log("theatre already in list ");
+                    theatreArray[theatreArrayCtr].theatreTimes.push(timeGrab);
+
+                } else {
+
+                    theatreArrayCtr++;
+
+                    // should this be here or elsewhere???
+                    var addTheatre = {
+                        theatreName: null,
+                        theatreLink: null,
+                        theatreTimes: [],
+                    };
+
+                    // console.log("theatre not yet added to the list");
+                    addTheatre.theatreName = showtimeLocation;
+                    addTheatre.theatreLink = grabLink;
+                    addTheatre.theatreTimes.push(timeGrab);
+
+                    theatreArray.push(addTheatre);
+
+                }
+            }
+        }
+
+        console.log(theatreArray);
+
+    }
+
+    if (theatreArray.length === 0) {
+
+        return "No Show Times Available";
+
+    } else {
+
+        return theatreArray;
+    }
+
+};
+
 
 //Clear out error message above form. Used in various places.
 function clearErrors () {
@@ -635,18 +809,34 @@ function putMovieAPIDataIntoTableDiv() {
     for (var i = 0; i < userData.movieOptions.length; i++) {
 
         movName = userData.movieOptions[i].title;
-        movTimes = "none returned"
+        movTimes = userData.movieOptions[i].showtimes;
+        // might need to take this out and use the showtimes array above w/ the locations inside
         movLocation = "none returned";
-        movRating = userData.movieOptions[i].vote_average;
+        
+        // check to see if data coming back has ratings details
+        // found one case that the api did not return the ratings array
+        if (userData.movieOptions[i].ratings != undefined) {
+            
+            movRating = userData.movieOptions[i].ratings[0].code;
+        } else {
+            
+            movRating = "Not Rated";
+        }
 
-        // console.log("movie Name = ", movName);
-        // console.log("movie Times = ", movTimes);
-        // console.log("movie Location = ", movLocation);
-        // console.log("movie Rating = ", movRating);
+        console.log("movie Name = ", movName);
+        console.log("movie Times = ", movTimes);
+        console.log("movie Location = ", movLocation);
+        console.log("movie Rating = ", movRating);
 
-        var newRestaurantRow = createTableRowRestaurant(i, movName, movTimes, movLocation, movRating);
+        var movTimesArray = getTimesLocationData2(movTimes);
 
-        $("#movie-choices-list > tbody").append(newRestaurantRow);
+        console.log("movTimesArray table data load")
+        console.log(movTimesArray);
+
+        // var newMovieRow = createTableRowMovie(i, movName, movTimes, movLocation, movRating);
+        var newMovieRow = createTableRowMovie2(i, movName, movTimesArray, movRating);
+
+        $("#movie-choices-list > tbody").append(newMovieRow);
     }
 
 }
@@ -689,21 +879,80 @@ function putRestaurantAPIDataIntoTableDiv() {
 // ---------------------------------------------------------------------------------------------------------------
 function createTableRowMovie(id, name, timesArray, location, rating) {
 
+    // console.log(timesArray);
+
+    // get current time to check against times from movie api
+    var currentTime = moment();
+
     var timesHTMLList = "<ul>";
+    var locationHTMLList = "<ul>";
 
     for (var i = 0; i < timesArray.length; i++) {
 
-        timesHTMLList += `<li>${timesArray[i]}</li>`;
+        var timeGrab = timesArray[i].dateTime.split("T").pop();
+        var movieTimeMoment = moment(timeGrab, "HH:mm");
+
+        // console.log(timeGrab);
+
+        // check to see if movie time from api is after current time
+        if (movieTimeMoment.isAfter(currentTime)) {
+
+            // console.log("still time to catch the movie");
+            var showtimeLocation = timesArray[i].theatre.name;
+            // console.log("location = ", showtimeLocation);
+            timesHTMLList += `<li>${timeGrab}</li>`;
+            locationHTMLList += `<li>${showtimeLocation}</li>`;
+        }
+
     }
 
-    timesArray += "</ul>";
+    timesHTMLList += "</ul>";
+    locationHTMLList += "</ul>";
 
     // use ` instead of ' or " to be able to add the variable names into the string and it interpret them for the values passed in
     return `
         <tr id='${id}'>
             <td>${name}</td>
             <td>${timesHTMLList}</td>
-            <td>${location}</td>
+            <td>${locationHTMLList}</td>
+            <td>${rating}</td>
+        </tr>
+    `;
+
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// Create & Format table row data for movie API data
+// arguments: movie name, times, location, rating
+// returns: html setup of the new table row with the table data passed in the arugments section
+// ---------------------------------------------------------------------------------------------------------------
+function createTableRowMovie2(id, name, timesArray, rating) {
+
+    console.log(timesArray);
+
+    var timesHTMLList = "<ul>";
+    var locationHTMLList = "<ul>";
+
+    for (var i = 0; i < timesArray.length; i++) {
+        
+        var timeGrab = timesArray[i].theatreTimes;
+        var nameGrab = timesArray[i].theatreName;
+
+        timesHTMLList += "<li>" + timeGrabList + "</li>";
+        locationHTMLList += "<li>" + nameGrab + "</li>";
+    
+    }
+
+    timesHTMLList += "</ul>";
+    locationHTMLList += "</ul>";
+
+
+    // use ` instead of ' or " to be able to add the variable names into the string and it interpret them for the values passed in
+    return `
+        <tr id='${id}'>
+            <td>${name}</td>
+            <td>${timesHTMLList}</td>
+            <td>${locationHTMLList}</td>
             <td>${rating}</td>
         </tr>
     `;
