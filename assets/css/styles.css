@@ -67,6 +67,9 @@ h1 {
     color: #fff;
 }
 
+#final-dinner-choice, #final-movie-choice {
+	display:none;
+}
 
 
 
