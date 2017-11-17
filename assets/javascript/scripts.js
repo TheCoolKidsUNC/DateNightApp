@@ -38,9 +38,6 @@ var validationData = {
         "id": 18,
         "name": "Drama"
     }, {
-        "id": 10751,
-        "name": "Family"
-    }, {
         "id": 14,
         "name": "Fantasy"
     }, {
