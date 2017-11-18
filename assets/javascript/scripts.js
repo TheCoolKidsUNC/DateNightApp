@@ -165,22 +165,15 @@ function dinnerQuery(cuisine, long, lat) {
     })
 }
 
-// here is one API key since we run out at 50 calls. ---- x23n96frwcyfg7jnss9h8ax4
-// var movieQuery = function(genre) {
+// here is one API key since we run out at 50 calls. ---- x23n96frwcyfg7jnss9h8ax4   or this one  xmmfbjcyadjpghdjbuh56he7
+
 function movieQuery(genre, long, lat) {
     var apikey = 'x23n96frwcyfg7jnss9h8ax4';
-    // var apikey = 'xmmfbjcyadjpghdjbuh56he7';
     var base = 'https://data.tmsapi.com/v1.1';
     var endpoint = '/movies/showings?';
     var startDate = moment().format('YYYY-MM-DD');
-    // var theater = ' &with_release_type=3';
-    // var releaseDate = '&primary_release_date.gte=2017-10-10&primary_release_date.lte=2017-10-30';
-    // var region = '&region=US';
-    // var url = base + endpoint + 'with_genres=' + genre + '&apikey=' + apikey;
-    // var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-17&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=x23n96frwcyfg7jnss9h8ax4';
-    // http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-15&lat=35.792752&lng=-78.654058&radius=15&units=mi&imageSize=Md&imageText=true&api_key=xmmfbjcyadjpghdjbuh56he7
-    var url = base + endpoint + 'startDate=' + startDate + '&zip=27605' + '&api_key=' + apikey;
-    // var url = 'http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-11-17&zip=78701&api_key=xmmfbjcyadjpghdjbuh56he7';
+    var url = base + endpoint + 'startDate=' + startDate + '&lat=' + lat + '&lng=' + long + '&radius=10&units=mi&imageSize=Md&imageText=true' + '&api_key=' + apikey;
+  
 
     $.ajax({
         crossDomain: true,
