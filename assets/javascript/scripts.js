@@ -170,9 +170,9 @@ function dinnerQuery(cuisine, long, lat) {
 function movieQuery(genre, long, lat) {
     var apikey = 'x23n96frwcyfg7jnss9h8ax4';
     // var apikey = 'xmmfbjcyadjpghdjbuh56he7';
-    var base = 'http://data.tmsapi.com/v1.1';
+    var base = 'https://data.tmsapi.com/v1.1';
     var endpoint = '/movies/showings?';
-    var startDate = '2017-11-19';
+    var startDate = moment().format('YYYY-MM-DD');
     // var theater = ' &with_release_type=3';
     // var releaseDate = '&primary_release_date.gte=2017-10-10&primary_release_date.lte=2017-10-30';
     // var region = '&region=US';
@@ -293,7 +293,7 @@ $("#add-new-genre").on("click", function(event) {
     //Check to see if user typed genre exists in validation array.
     var genreIsValid = false;
     validationData.genres.forEach(function(item) {
-        if (item.name === userGenre) {
+        if (item.name.toLowerCase() === userGenre) {
             genreIsValid = true;
         }
     })
