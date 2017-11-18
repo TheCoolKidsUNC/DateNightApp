@@ -359,6 +359,12 @@ function scrollToDetails () {
     }
 }
 
+function showDateChoice () {
+	if (userData.dinnerDecision !== null && userData.movieDecision !==null) {
+  	     $('#final-dinner-choice').slideDown('fast');
+  	     $('#final-movie-choice').slideDown('fast');
+    }
+}
 
 // ---------------------------------------------------------------------------------------------------------------
 // Event Handler for Movie Choices Table Row Click
@@ -382,6 +388,7 @@ $("#movie-choices-list").on("click", "tbody > tr", function(e) {
     userData.movieDecision = userData.movieOptions[movieChoiceItem];
 
     console.log("final choice info ", userData.movieDecision);
+    showDateChoice();   
     scrollToDetails();
 
     // empty the table to start clean if other options have been picked previously
@@ -509,6 +516,7 @@ $("#restaurant-choices-list").on("click", "tbody > tr", function(e) {
     userData.dinnerDecision = userData.dinnerOptions[restChoiceItem];
 
     console.log("final choice info ", userData.dinnerDecision);
+    showDateChoice();
     scrollToDetails();
 
     // empty the table to start clean if other options have been picked previously
